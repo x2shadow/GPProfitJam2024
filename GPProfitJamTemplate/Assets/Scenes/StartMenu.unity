@@ -209,7 +209,6 @@ GameObject:
   - component: {fileID: 346133851}
   - component: {fileID: 346133850}
   - component: {fileID: 346133849}
-  - component: {fileID: 346133852}
   m_Layer: 5
   m_Name: Button(Play)
   m_TagString: Untagged
@@ -280,19 +279,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 346133850}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 346133852}
-        m_TargetAssemblyTypeName: ButtonPlay, Assembly-CSharp
-        m_MethodName: PlayGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &346133850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,18 +318,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346133847}
   m_CullTransparentMesh: 1
---- !u!114 &346133852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346133847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 233a8d761c46db1449726976f649cb0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &358519681
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,7 +528,6 @@ GameObject:
   m_Component:
   - component: {fileID: 713069594}
   - component: {fileID: 713069595}
-  - component: {fileID: 713069596}
   m_Layer: 5
   m_Name: VolumeSlider
   m_TagString: Untagged
@@ -632,37 +606,10 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.5
+  m_Value: 0.1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 713069596}
-        m_TargetAssemblyTypeName: VolumeManager, Assembly-CSharp
-        m_MethodName: ChangeVolume
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &713069596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 713069593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8ecc13d2be1a244d8f5efe61c9d5b17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 713069595}
-  volume: 0.1
-  volumeIcon: {fileID: 953167495}
+      m_Calls: []
 --- !u!1 &792815685
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,7 +627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &792815686
 MonoBehaviour:
   m_ObjectHideFlags: 0

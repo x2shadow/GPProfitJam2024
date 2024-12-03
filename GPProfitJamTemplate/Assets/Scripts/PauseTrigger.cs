@@ -1,19 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PauseTrigger : MonoBehaviour
 {
     [SerializeField] GameObject pausePanel;
     bool isPaused;
 
+    public InputAction move;
+    public InputAction jump;
+    public InputAction pause;
+
+    void Awake()
+    {
+        pause.performed += context => { OnPause(context); };
+    }
+
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(isPaused) Resume(); else Pause();
-        }
-        
+    }
+
+    void OnPause(InputAction.CallbackContext context)
+    {
+        if(isPaused) Resume(); else if(!isPaused) Pause();
     }
 
     void Pause()
@@ -28,5 +36,15 @@ public class PauseTrigger : MonoBehaviour
         Time.timeScale = 1;
         isPaused = false;
         pausePanel.SetActive(false);
+    }
+
+    void OnEnable()
+    {
+        pause.Enable();
+    }
+
+    void OnDisable()
+    {
+        pause.Disable();
     }
 }
