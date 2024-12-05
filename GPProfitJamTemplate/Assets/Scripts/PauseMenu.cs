@@ -6,16 +6,37 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pausePanel;
+    [SerializeField] GameObject gameplayPanel;
 
-    public void ButtonResume()
+    void Update()
     {
-        Time.timeScale = 1;
-        pausePanel.SetActive(false);
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(GameManager.Instance.isPaused) Resume(); else Pause();
+        }
+        
     }
 
-    public void ButtonStartMenu()
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        GameManager.Instance.isPaused = true;
+        pausePanel.SetActive(true);
+        gameplayPanel.SetActive(false);
+    }
+
+    public void Resume()
     {
         Time.timeScale = 1;
+        GameManager.Instance.isPaused = false;
+        pausePanel.SetActive(false);
+        gameplayPanel.SetActive(true);
+    }
+
+    public void StartMenu()
+    {
+        Time.timeScale = 1;
+        GameManager.Instance.isPaused = false;
         SceneManager.LoadScene("StartMenu");
     }
 }
