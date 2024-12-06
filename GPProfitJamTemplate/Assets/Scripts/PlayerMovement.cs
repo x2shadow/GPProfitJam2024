@@ -1,27 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    CharacterController controller;
-    [SerializeField] float speed = 8f;
+    public float jumpHeight = 2f;       // Высота прыжка
+    public float gravity = -9.81f;      // Сила гравитации
+    public float gravityScale = 2f;
+    public float walkSpeed = 5f;        // Скорость передвижения по плоскости
+    public float rotationSpeed = 700f;  // Скорость поворота персонажа
 
-    // Start is called before the first frame update
+    private CharacterController characterController;
+    private Vector3 velocity;           // Текущая скорость персонажа
+    private bool isGrounded;            // Проверка, на земле ли персонаж
+
     void Start()
     {
-        controller = GetComponent<CharacterController>();
-        
+        // Получаем компонент CharacterController
+        characterController = GetComponent<CharacterController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        // Проверка, находится ли персонаж на земле
+        isGrounded = characterController.isGrounded;
 
-        Vector3 moveDirection = transform.right * x + transform.forward * z;
+        // Если на земле, сбрасываем скорость по оси Y (чтобы избежать накопления гравитации)
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
 
-        controller.Move(moveDirection * speed * Time.deltaTime);
+        // Обработка движения персонажа
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        Vector3 move = transform.right * horizontal + transform.forward * vertical;
+
+        // Движение персонажа по плоскости
+        characterController.Move(move * walkSpeed * Time.deltaTime);
+
+        // Прыжок (если персонаж на земле)
+        if (isGrounded && Input.GetButtonDown("Jump"))
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);  // Формула для прыжка
+        }
+
+        // Применяем гравитацию
+        velocity.y += gravity * gravityScale * Time.deltaTime;
+
+        // Перемещение с учетом гравитации
+        characterController.Move(velocity * Time.deltaTime);
     }
 }
