@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = -9.81f;      // Сила гравитации
     public float gravityScale = 2f;
     public float walkSpeed = 5f;        // Скорость передвижения по плоскости
-    public float rotationSpeed = 700f;  // Скорость поворота персонажа
 
     private CharacterController characterController;
     private Vector3 velocity;           // Текущая скорость персонажа
