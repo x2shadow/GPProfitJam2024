@@ -17,6 +17,28 @@ public enum DishType
     Cookie
 }
 
+public static class Dish
+{
+    private static Dictionary<DishType, Ingredient[]> dishes = new Dictionary<DishType, Ingredient[]>
+    {
+        { DishType.Cake,   new Ingredient[] { Ingredient.Flour, Ingredient.Sugar, Ingredient.Egg } },
+        { DishType.Cookie, new Ingredient[] { Ingredient.Flour, Ingredient.Sugar, Ingredient.Egg, Ingredient.Milk } }
+    };
+
+    public static Ingredient[] GetIngredients(DishType dishType)
+    {
+        if (dishes.TryGetValue(dishType, out Ingredient[] ingredients))
+        {
+            return ingredients;
+        }
+        else
+        {
+            throw new KeyNotFoundException($"Блюдо {dishType} не найдено в книге рецептов");
+        }
+    }
+}
+
+/*
 [System.Serializable]
 public class Dish
 {
@@ -79,3 +101,4 @@ public class DishFactory
         }
     }
 }
+*/
