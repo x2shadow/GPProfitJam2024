@@ -5,14 +5,11 @@ using UnityEngine;
 public class MobileUI : MonoBehaviour
 {
     [SerializeField] GameObject mobileUI;
+    [SerializeField] PlayerMovement playerMovement;
     
     void Start()
     {
-        Debug.Log(SystemInfo.deviceType);
-
-        if(SystemInfo.deviceType == DeviceType.Handheld)
-        {
-            mobileUI.SetActive(true);
-        }
+        mobileUI.SetActive(Application.isMobilePlatform);
+        playerMovement.joystickActive = Application.isMobilePlatform;
     }
 }
