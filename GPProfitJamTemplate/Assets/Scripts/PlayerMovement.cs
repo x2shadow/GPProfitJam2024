@@ -11,6 +11,12 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;           // Текущая скорость персонажа
     private bool isGrounded;            // Проверка, на земле ли персонаж
 
+    public Joystick joystick;
+    public bool joystickActive;
+
+    float horizontal;
+    float vertical;
+
     void Start()
     {
         // Получаем компонент CharacterController
@@ -29,8 +35,17 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Обработка движения персонажа
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        if(joystickActive)
+        {
+            horizontal = joystick.Horizontal;
+            vertical = joystick.Vertical;
+        }
+        else
+        {
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
+        }
+
 
         Vector3 move = transform.right * horizontal + transform.forward * vertical;
 
@@ -38,15 +53,21 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(move * walkSpeed * Time.deltaTime);
 
         // Прыжок (если персонаж на земле)
-        if (isGrounded && Input.GetButtonDown("Jump"))
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);  // Формула для прыжка
-        }
+        if(Input.GetButtonDown("Jump")) Jump();
 
         // Применяем гравитацию
         velocity.y += gravity * gravityScale * Time.deltaTime;
 
         // Перемещение с учетом гравитации
         characterController.Move(velocity * Time.deltaTime);
+    }
+
+    public void Jump()
+    {
+        // Прыжок (если персонаж на земле)
+        if (isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);  // Формула для прыжка
+        }
     }
 }
