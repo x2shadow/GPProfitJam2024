@@ -8,8 +8,13 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 5f;        // Скорость передвижения по плоскости
 
     private CharacterController characterController;
+    public Transform model;
+    public Animator animator;
     private Vector3 velocity;           // Текущая скорость персонажа
     private bool isGrounded;            // Проверка, на земле ли персонаж
+
+    private Vector3 currentMove; // Текущее движение
+    public float smoothStopTime = 0.08f; // Время для остановки
 
     public Joystick joystick;
     public bool joystickActive;
@@ -41,15 +46,36 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            horizontal = Input.GetAxis("Horizontal");
-            vertical = Input.GetAxis("Vertical");
+            horizontal = Input.GetAxisRaw("Horizontal");
+            vertical = Input.GetAxisRaw("Vertical");
         }
 
+        Vector3 move = new Vector3(horizontal, 0, vertical).normalized;
+        //Vector3 move = transform.right * horizontal + transform.forward * vertical;
 
-        Vector3 move = transform.right * horizontal + transform.forward * vertical;
+         // Плавное изменение текущего движения к целевому
+        currentMove = Vector3.Lerp(currentMove, move, Time.deltaTime / smoothStopTime);
+
+
+        // Устанавливаем параметр Speed для анимации
+        animator.SetFloat("Speed", currentMove.magnitude);
+
+        // Установка параметра "Running"
+        bool isRunning = horizontal != 0 || vertical != 0; // Проверка, нажата ли хотя бы одна кнопка
+        animator.SetBool("Running", isRunning);
+
+
+        // Двигаем персонажа
+        if (move.magnitude >= 0.1f)
+        {
+            // Поворачиваем персонажа в направлении движения
+            Quaternion toRotation = Quaternion.LookRotation(currentMove, Vector3.up);
+            model.rotation = Quaternion.Lerp(model.rotation, toRotation, Time.deltaTime * 10f);
+        }
+       
 
         // Движение персонажа по плоскости
-        characterController.Move(move * walkSpeed * Time.deltaTime);
+        characterController.Move(currentMove * walkSpeed * Time.deltaTime);
 
         // Прыжок (если персонаж на земле)
         if(Input.GetButtonDown("Jump")) Jump();
