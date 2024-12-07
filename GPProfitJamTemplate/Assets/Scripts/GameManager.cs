@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public bool isPaused;
 
     public DishType order;
+
+    [Header("UI")]
     public GameObject orderUI;
     public TextMeshProUGUI dishName;
     public TextMeshProUGUI ingridients;
@@ -29,6 +31,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("Level 1");
+        //if(Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("Level 1");
     }
 }

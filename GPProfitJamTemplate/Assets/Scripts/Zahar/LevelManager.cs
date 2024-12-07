@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    public List<Client> clients = new List<Client>();
     public float levelTime = 120f; // Время на уровень в секундах
     private float timer;
+    
+    public List<Client> clients = new List<Client>();
 
+    [Header("UI")]
     public TextMeshProUGUI timerText; // UI элемент для отображения времени
     public GameObject winPanel; // Панель победы
     public GameObject losePanel; // Панель проигрыша

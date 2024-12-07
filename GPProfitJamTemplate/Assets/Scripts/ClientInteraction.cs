@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;  // Для работы с UI
 
@@ -6,6 +7,7 @@ public class ClientInteraction : MonoBehaviour
     public GameObject interactionButton;  // Кнопка "Взять заказ"
     private bool playerInRange = false;  // Проверка, находится ли игрок в зоне взаимодействия
     [SerializeField] Client client;
+    public List<OrderIngredient> currentOrderIngredients = new List<OrderIngredient>();
 
     void Start()
     {
@@ -19,6 +21,11 @@ public class ClientInteraction : MonoBehaviour
         {
             TakeOrder();
         }
+
+        if(Input.GetKeyDown(KeyCode.Alpha1))AddIngredientToMixer(Ingredient.Sugar);
+        if(Input.GetKeyDown(KeyCode.Alpha2))AddIngredientToMixer(Ingredient.Egg);
+        if(Input.GetKeyDown(KeyCode.Alpha3))AddIngredientToMixer(Ingredient.Flour);
+        if(Input.GetKeyDown(KeyCode.Alpha4))AddIngredientToMixer(Ingredient.Milk);
     }
 
     void OnTriggerEnter(Collider other)
@@ -43,7 +50,6 @@ public class ClientInteraction : MonoBehaviour
     void TakeOrder()
     {
         DishType order = client.dishType;
-
         GameManager.Instance.order = order;
 
         Debug.Log("Заказ: " + order);
@@ -52,11 +58,60 @@ public class ClientInteraction : MonoBehaviour
         GameManager.Instance.dishName.text = order.ToString();
         
         Ingredient[] ingredients =  Dish.GetIngredients(order);
+        currentOrderIngredients.Clear();
+        //GameManager.Instance.ingridients.text = "";
+
+        //for(int i = 0; i < ingredients.Length; i++) GameManager.Instance.ingridients.text += "- "+ ingredients[i].ToString() + "\n";
+
+
+        foreach (Ingredient ingredient in ingredients)
+        {
+            currentOrderIngredients.Add(new OrderIngredient { ingredient = ingredient, isAdded = false });
+        }
+
+        UpdateIngredientListUI();
+    }
+
+    void UpdateIngredientListUI()
+    {
         GameManager.Instance.ingridients.text = "";
 
-        for(int i = 0; i < ingredients.Length; i++) GameManager.Instance.ingridients.text += "- "+ ingredients[i].ToString() + "\n";
+        foreach (var orderIngredient in currentOrderIngredients)
+        {
+            string displayText = orderIngredient.isAdded 
+                ? $"<s>{orderIngredient.ingredient}</s>" // Зачёркнутый текст
+                : $"- {orderIngredient.ingredient}";
 
-        // Здесь можно добавить логику для выполнения заказа, например, отображение информации о заказе
-        // или начало выполнения задания.
+            GameManager.Instance.ingridients.text += displayText + "\n";
+        }
+    }
+
+    public void AddIngredientToMixer(Ingredient ingredient)
+    {
+        foreach (var orderIngredient in currentOrderIngredients)
+        {
+            if (orderIngredient.ingredient == ingredient && !orderIngredient.isAdded)
+            {
+                orderIngredient.isAdded = true;
+                Debug.Log($"Добавлен ингредиент {ingredient}");
+                UpdateIngredientListUI();
+                CheckIfOrderCompleted();
+                return;
+            }
+        }
+
+        Debug.LogWarning("Этот ингредиент не нужен для текущего заказа!");
+    }
+
+    void CheckIfOrderCompleted()
+    {
+        foreach (var orderIngredient in currentOrderIngredients)
+        {
+            if (!orderIngredient.isAdded)
+                return;
+        }
+
+        Debug.Log("Заказ выполнен!");
+        //GameManager.Instance.CompleteOrder(); // Метод для обработки завершения заказа
     }
 }

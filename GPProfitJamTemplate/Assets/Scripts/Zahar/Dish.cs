@@ -11,6 +11,13 @@ public enum Ingredient
     Flour
 }
 
+[System.Serializable]
+public class OrderIngredient
+{
+    public Ingredient ingredient;
+    public bool isAdded;
+}
+
 public enum DishType
 {
     Cake,
