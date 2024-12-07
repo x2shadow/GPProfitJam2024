@@ -9,8 +9,6 @@ public class LevelManager : MonoBehaviour
     public float levelTime = 120f; // Время на уровень в секундах
     private float timer;
     
-    public List<Client> clients = new List<Client>();
-
     [Header("UI")]
     public TextMeshProUGUI timerText; // UI элемент для отображения времени
     public GameObject winPanel; // Панель победы

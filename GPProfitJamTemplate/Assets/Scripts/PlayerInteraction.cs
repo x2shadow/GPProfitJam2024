@@ -9,6 +9,8 @@ public class PlayerInteraction : MonoBehaviour
     public bool hasBakedDish = false; // Готовое блюдо в руках
     public bool hasOrder = false;
 
+    [SerializeField] ClientSpawnSystem clientSystem;
+
     public GameObject interactionButton;  // Кнопка "Взять заказ"
     public Button     interactButtonMobile; // Ссылка на кнопку Interact
 
@@ -46,6 +48,7 @@ public class PlayerInteraction : MonoBehaviour
                     Debug.Log($"Вы отдали блюдо клиенту!");
                     hasBakedDish = false;
                     hasOrder = false;
+                    clientSystem.OrderGiven();
                     OrderManager.Instance.CloseOrderUI();
                 }
                 else
@@ -174,6 +177,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         Debug.Log("Взят заказ клиента.");
         hasOrder = true;
+        clientSystem.OrderTaken();
         OrderManager.Instance.InitializeOrder(client.dishType);
     }
 

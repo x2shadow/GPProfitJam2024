@@ -6,74 +6,82 @@ public class ClientSpawnSystem : MonoBehaviour
 {
     Queue<GameObject> queue; // Очередь клиентов
     public int clientsNumber;
+    public int clientsDone; //Количество обслуженных клиентов
     public float spawnrate;
 
-    [SerializeField] GameObject waitPoint;           // Белая точка
-    [SerializeField] GameObject spawnPoint;          // Черная точка
-    [SerializeField] List<GameObject> queuePoints;  // Красные точки
+    [SerializeField] LevelManager levelManager;
+    
+    [SerializeField] List<GameObject> clientsPrefabs; // Префабы клиентов
+
+    [SerializeField] GameObject waitPoint;           // Точка ожидания заказа
+    [SerializeField] GameObject spawnPoint;          // Точка спавна
+    [SerializeField] List<GameObject> queuePoints;  //  Точки в очереди
     
     GameObject waitingClient; // Клиент, ожидающий выдачи заказа
 
-    int farthest_Free_queuePoints_Index; // Индекс самой дальней свободной точки
+    int nextFreeQueuePointIndex; // Индекс самой дальней свободной точки
 
-    [SerializeField] List<GameObject> clientsPrefabs; // Префабы клиентов
 
     void Start()
     {
-        farthest_Free_queuePoints_Index = 0;
+        if (clientsPrefabs == null || clientsPrefabs.Count == 0)
+        {
+            Debug.LogError("Список префабов клиентов пуст. Добавьте хотя бы один префаб в 'clientsPrefabs'.");
+        }
+
+        if (queuePoints == null || queuePoints.Count == 0)
+        {
+            Debug.LogError("Список точек очереди пуст. Проверьте настройки.");
+        }
+
+        nextFreeQueuePointIndex = 0;
         queue = new Queue<GameObject>();
 
-        StartCoroutine(SpawnVisitors());
+        StartCoroutine(Spawner());
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T)) TakeOrder();
-        if (Input.GetKeyDown(KeyCode.G)) GiveOrder();
-    }
-
-    IEnumerator SpawnVisitors() // Корутина для спавна клиентов
+    IEnumerator Spawner() // Корутина для спавна клиентов
     {
         int i = 0;
 
         while (i < clientsNumber)
         {
+            // Если все точки заняты, ждем, пока освободится место
+            while (nextFreeQueuePointIndex >= queuePoints.Count)
+            {
+                Debug.Log("[ClientSpawnSystem]: Все точки заняты. Ожидание освобождения...");
+                yield return new WaitForSeconds(5f); // Ждем 5 секунд перед повторной проверкой
+            }
+
             yield return new WaitForSeconds(spawnrate);
 
-            if (farthest_Free_queuePoints_Index < queuePoints.Count)
-            {
-                int randomIndex = Random.Range(0, clientsPrefabs.Count); // Выбор случайного префаба клиента
-                GameObject selectedPrefab = clientsPrefabs[randomIndex];
+            // Спавним клиента, если есть свободная точка
+            int randomIndex = Random.Range(0, clientsPrefabs.Count); // Выбор случайного префаба клиента
+            GameObject selectedPrefab = clientsPrefabs[randomIndex];
 
-                GameObject client = Instantiate(selectedPrefab, spawnPoint.transform.position, Quaternion.identity);
-                queue.Enqueue(client); // Добавляем клиента в очередь
+            GameObject client = Instantiate(selectedPrefab, spawnPoint.transform.position, Quaternion.identity);
+            queue.Enqueue(client); // Добавляем клиента в очередь
 
-                SmoothTranslate(client);
-
-                farthest_Free_queuePoints_Index++;
-                i++;
-            }
-            else
-            {
-                Debug.LogWarning("Все точки очереди заняты. Новый клиент не может быть создан.");
-            }
+            SmoothTranslate(client); // Перемещаем клиента на свободную точку
+            nextFreeQueuePointIndex++;
+            i++; // Увеличиваем счетчик клиентов
         }
     }
 
     void SmoothTranslate(GameObject client) // Перемещение клиента на свободную точку
     {
-        if (farthest_Free_queuePoints_Index < queuePoints.Count)
+        if (nextFreeQueuePointIndex < queuePoints.Count)
         {
-            GameObject target = queuePoints[farthest_Free_queuePoints_Index];
+            GameObject target = queuePoints[nextFreeQueuePointIndex];
             client.transform.position = target.transform.position;
         }
         else
         {
-            Debug.LogError("Попытка перемещения клиента на недоступную точку.");
+            Debug.LogError("[ClientSpawnSystem]: Попытка перемещения клиента на недоступную точку.");
         }
     }
 
-    void TakeOrder() // Удаление клиента из очереди и перемещение его на выдачу
+    public void OrderTaken() // Удаление клиента из очереди и перемещение его на выдачу
     {
         if (queue.Count > 0 && waitingClient == null)
         {
@@ -82,7 +90,7 @@ public class ClientSpawnSystem : MonoBehaviour
             waitingClient = client;
 
             MoveQueue();
-            farthest_Free_queuePoints_Index--;
+            nextFreeQueuePointIndex = Mathf.Max(0, nextFreeQueuePointIndex - 1); // Освобождаем одну точку
             Debug.Log("Order Taken");
         }
         else
@@ -93,35 +101,31 @@ public class ClientSpawnSystem : MonoBehaviour
 
     void MoveQueue() // Сдвиг очереди на одну позицию вперед
     {
-        if (queue.Count > 0)
+        if (queue.Count > queuePoints.Count)
         {
-            int i = 0;
-            foreach (GameObject client in queue)
-            {
-                if (i < queuePoints.Count)
-                {
-                    client.transform.position = queuePoints[i].transform.position;
-                }
-                else
-                {
-                    Debug.LogError("Попытка сдвига очереди с превышением индекса.");
-                }
-                i++;
-            }
+            Debug.LogError("[ClientSpawnSystem]: Очередь превышает количество точек.");
+            return;
         }
-        else
+
+        int i = 0;
+        foreach (GameObject client in queue)
         {
-            Debug.Log("Очередь пуста, сдвиг не требуется.");
+            client.transform.position = queuePoints[i].transform.position;
+            i++;
         }
     }
 
-    void GiveOrder() // Выдача заказа клиенту
+    public void OrderGiven() // Выдача заказа клиенту
     {
         if (waitingClient != null)
         {
+            clientsDone++;
+
             Destroy(waitingClient);
             waitingClient = null;
-            Debug.Log("Order Given");
+            
+
+            if(clientsDone == clientsNumber) levelManager.CompleteLevel();
         }
         else
         {

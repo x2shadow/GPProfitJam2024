@@ -272,6 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasBakedDish: 0
   hasOrder: 0
+  clientSystem: {fileID: 1470461412}
   interactionButton: {fileID: 281652768}
   interactButtonMobile: {fileID: 280200666}
 --- !u!1 &82826598
@@ -4722,6 +4723,7 @@ Transform:
   m_Children:
   - {fileID: 1973573418}
   - {fileID: 963691042}
+  - {fileID: 1470461413}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1361918384
@@ -5306,18 +5308,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02690ac397c583a4c8229e13f8644c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientsNumber: 5
-  spawnrate: 2
+  clientsNumber: 2
+  clientsDone: 0
+  spawnrate: 0.5
+  levelManager: {fileID: 1973573419}
+  clientsPrefabs:
+  - {fileID: 574522055236611294, guid: 6ee35f794ba568445beeb8de299b8f65, type: 3}
   waitPoint: {fileID: 1443388931}
   spawnPoint: {fileID: 1525952061}
   queuePoints:
   - {fileID: 943238824}
   - {fileID: 1849457692}
   - {fileID: 291746405}
-  clientsPrefabs:
-  - {fileID: 574522055236611294, guid: 6ee35f794ba568445beeb8de299b8f65, type: 3}
-  - {fileID: 3481853290894048433, guid: da06fc0273f028f4bb3a141de9ff143f, type: 3}
-  - {fileID: 519111259466539540, guid: 74561ef5e18c4924fb6cbdd19cd24d6b, type: 3}
 --- !u!4 &1470461413
 Transform:
   m_ObjectHideFlags: 0
@@ -5326,12 +5328,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470461411}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1358649477}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1475050768
 GameObject:
@@ -7066,9 +7068,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelTime: 500
-  clients:
-  - {fileID: 0}
-  - {fileID: 0}
   timerText: {fileID: 1711584348}
   winPanel: {fileID: 780369217}
   losePanel: {fileID: 341719513}
@@ -7915,5 +7914,4 @@ SceneRoots:
   - {fileID: 262002290}
   - {fileID: 592220645}
   - {fileID: 1099620881}
-  - {fileID: 1470461413}
   - {fileID: 2127692166}
