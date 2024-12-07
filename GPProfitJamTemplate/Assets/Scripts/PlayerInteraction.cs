@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -9,15 +10,83 @@ public class PlayerInteraction : MonoBehaviour
     public bool hasOrder = false;
 
     public GameObject interactionButton;  // Кнопка "Взять заказ"
+    public Button     interactButtonMobile; // Ссылка на кнопку Interact
 
     void Start()
     {
         interactionButton.SetActive(false);
+        interactButtonMobile.gameObject.SetActive(false);
+        interactButtonMobile.onClick.AddListener(OnInteractButtonPressed);
     }
 
     void Update()
     {
         if (nearbyObject != null && Input.GetKeyDown(KeyCode.E))
+        {
+            if (nearbyObject.CompareTag("EggPack"))
+            {
+                TakeIngredient(Ingredient.Egg);
+            }
+            else if (nearbyObject.CompareTag("FlourPack"))
+            {
+                TakeIngredient(Ingredient.Flour);
+            }
+            else if (nearbyObject.CompareTag("MilkPack"))
+            {
+                TakeIngredient(Ingredient.Milk);
+            }
+            else if(nearbyObject.CompareTag("Client"))
+            {
+                if(hasOrder == false)
+                {
+                    TakeOrder(nearbyObject.GetComponent<Client>());
+                }
+                else if (hasBakedDish)
+                {
+                    Debug.Log($"Вы отдали блюдо клиенту!");
+                    hasBakedDish = false;
+                    hasOrder = false;
+                    OrderManager.Instance.CloseOrderUI();
+                }
+                else
+                {
+                    Debug.Log("У вас нет готового блюда, чтобы отдать клиенту.");
+                }
+
+            }
+            else if (nearbyObject.CompareTag("Mixer"))
+            {
+                AddToMixer(nearbyObject.GetComponent<Mixer>());
+            }
+            else if (nearbyObject.CompareTag("Oven"))
+            {
+                Oven oven = nearbyObject.GetComponent<Oven>();
+                if (oven != null)
+                {
+                    if (oven.hasMixedProduct)
+                    {
+                        oven.StartBaking();
+                    }
+                    else if (oven.hasBakedDish)
+                    {
+                        TakeBakedDish(oven);
+                    }
+                    else if (oven.isBaking)
+                    {
+                        Debug.Log("Продукт всё ещё запекается.");
+                    }
+                    else
+                    {
+                        Debug.Log("В печи ничего нет.");
+                    }
+                }
+            }
+        }
+    }
+
+    void OnInteractButtonPressed()
+    {
+        if (nearbyObject != null)
         {
             if (nearbyObject.CompareTag("EggPack"))
             {
@@ -87,6 +156,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             nearbyObject = other.gameObject;
             interactionButton.SetActive(true);
+            interactButtonMobile.gameObject.SetActive(true);
         }
     }
 
@@ -96,6 +166,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             nearbyObject = null;
             interactionButton.SetActive(false);
+            interactButtonMobile.gameObject.SetActive(false);
         }
     }
 

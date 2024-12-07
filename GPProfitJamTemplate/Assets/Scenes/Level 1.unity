@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1541986
 RectTransform:
   m_ObjectHideFlags: 0
@@ -270,7 +270,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8bce837a86f95044b39fae063ff8fb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasBakedDish: 0
+  hasOrder: 0
   interactionButton: {fileID: 281652768}
+  interactButtonMobile: {fileID: 280200666}
 --- !u!1 &82826598
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,6 +771,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasMixedProduct: 0
+  hasBakedDish: 0
+  isBaking: 0
   bakingTime: 5
 --- !u!1 &269720911
 GameObject:
@@ -4461,7 +4466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48c260cbe79136442867b97329ccbc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dishType: 0
+  dishType: 1
 --- !u!1 &1351171173
 GameObject:
   m_ObjectHideFlags: 0
