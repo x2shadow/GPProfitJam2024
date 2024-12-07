@@ -60,6 +60,20 @@ public class ClientSpawnSystem : MonoBehaviour
             GameObject selectedPrefab = clientsPrefabs[randomIndex];
 
             GameObject client = Instantiate(selectedPrefab, spawnPoint.transform.position, Quaternion.identity);
+
+            // Назначаем случайное блюдо
+            Client clientComponent = client.GetComponent<Client>();
+            if (clientComponent != null)
+            {
+                DishType randomDish = (DishType)Random.Range(1, 5); // от 1 до 5 в enum DishType
+                clientComponent.dishType = randomDish;
+                Debug.Log($"Клиенту назначено блюдо: {clientComponent.dishType}");
+            }
+            else
+            {
+                Debug.LogError("Компонент 'Client' не найден у спавнимого клиента.");
+            }
+
             queue.Enqueue(client); // Добавляем клиента в очередь
 
             SmoothTranslate(client); // Перемещаем клиента на свободную точку
