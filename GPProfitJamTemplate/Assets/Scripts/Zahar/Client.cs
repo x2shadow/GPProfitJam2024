@@ -1,7 +1,8 @@
 using System;
+using UnityEngine;
 
 [System.Serializable]
-public class Client
+public class Client : MonoBehaviour
 {
     public DishType dishType;
     //public float arrivalTime;

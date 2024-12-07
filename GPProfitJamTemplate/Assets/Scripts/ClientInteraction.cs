@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;  // Для работы с UI
 
-public class CustomerInteraction : MonoBehaviour
+public class ClientInteraction : MonoBehaviour
 {
     public GameObject interactionButton;  // Кнопка "Взять заказ"
     private bool playerInRange = false;  // Проверка, находится ли игрок в зоне взаимодействия
+    [SerializeField] Client client;
 
     void Start()
     {
@@ -41,7 +42,20 @@ public class CustomerInteraction : MonoBehaviour
 
     void TakeOrder()
     {
-        Debug.Log("Вы взяли заказ!");
+        DishType order = client.dishType;
+
+        GameManager.Instance.order = order;
+
+        Debug.Log("Заказ: " + order);
+
+        GameManager.Instance.orderUI.SetActive(true);
+        GameManager.Instance.dishName.text = order.ToString();
+        
+        Ingredient[] ingredients =  Dish.GetIngredients(order);
+        GameManager.Instance.ingridients.text = "";
+
+        for(int i = 0; i < ingredients.Length; i++) GameManager.Instance.ingridients.text += "- "+ ingredients[i].ToString() + "\n";
+
         // Здесь можно добавить логику для выполнения заказа, например, отображение информации о заказе
         // или начало выполнения задания.
     }
