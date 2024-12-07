@@ -6,10 +6,10 @@ using UnityEngine;
 public enum Ingredient
 {
     None,
-    Sugar,
-    Egg,
     Milk,
-    Flour
+    Flour,
+    Egg,
+    Chocolate
 }
 
 [System.Serializable]
@@ -22,16 +22,20 @@ public class OrderIngredient
 public enum DishType
 {
     None,
-    Cake,
-    Cookie
+    StrawberryCake,
+    Cupcake,
+    Cookie,
+    ChocolateCake
 }
 
 public static class Dish
 {
     private static Dictionary<DishType, Ingredient[]> dishes = new Dictionary<DishType, Ingredient[]>
     {
-        { DishType.Cake,   new Ingredient[] { Ingredient.Flour, Ingredient.Milk, Ingredient.Egg } },
-        { DishType.Cookie, new Ingredient[] { Ingredient.Flour, Ingredient.Egg, Ingredient.Milk } }
+        { DishType.StrawberryCake, new Ingredient[] { Ingredient.Milk, Ingredient.Flour, Ingredient.Egg } },
+        { DishType.Cupcake,        new Ingredient[] { Ingredient.Chocolate, Ingredient.Flour, Ingredient.Egg } },
+        { DishType.Cookie,         new Ingredient[] { Ingredient.Milk, Ingredient.Flour, Ingredient.Chocolate } },
+        { DishType.ChocolateCake,  new Ingredient[] { Ingredient.Milk, Ingredient.Egg, Ingredient.Chocolate } }
     };
 
     public static Ingredient[] GetIngredients(DishType dishType)
