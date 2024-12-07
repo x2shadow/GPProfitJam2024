@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public enum Ingredient
 {
+    None,
     Sugar,
     Egg,
     Milk,
@@ -28,7 +29,7 @@ public static class Dish
 {
     private static Dictionary<DishType, Ingredient[]> dishes = new Dictionary<DishType, Ingredient[]>
     {
-        { DishType.Cake,   new Ingredient[] { Ingredient.Flour, Ingredient.Sugar, Ingredient.Egg } },
+        { DishType.Cake,   new Ingredient[] { Ingredient.Flour, Ingredient.Milk, Ingredient.Egg } },
         { DishType.Cookie, new Ingredient[] { Ingredient.Flour, Ingredient.Sugar, Ingredient.Egg, Ingredient.Milk } }
     };
 

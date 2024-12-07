@@ -10,15 +10,6 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused;
 
-    public DishType order;
-
-    [SerializeField] LevelManager levelManager;
-
-    [Header("UI")]
-    public GameObject orderUI;
-    public TextMeshProUGUI dishName;
-    public TextMeshProUGUI ingridients;
-
     void Awake()
     {
         if(Instance != null && Instance != this)
@@ -34,11 +25,5 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //if(Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("Level 1");
-    }
-
-    public void CompleteOrder()
-    {
-        levelManager.clients.Clear();
-        if(levelManager.clients.Count == 0) levelManager.CompleteLevel();
     }
 }

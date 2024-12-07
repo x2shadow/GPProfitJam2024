@@ -8,6 +8,7 @@ public class ClientInteraction : MonoBehaviour
     private bool playerInRange = false;  // Проверка, находится ли игрок в зоне взаимодействия
     [SerializeField] Client client;
     public List<OrderIngredient> currentOrderIngredients = new List<OrderIngredient>();
+    public bool isReadyToMix = false;
 
     void Start()
     {
@@ -19,13 +20,8 @@ public class ClientInteraction : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E)) // Используем E для взаимодействия
         {
-            TakeOrder();
+            TakeOrder(); 
         }
-
-        if(Input.GetKeyDown(KeyCode.Alpha1))AddIngredientToMixer(Ingredient.Sugar);
-        if(Input.GetKeyDown(KeyCode.Alpha2))AddIngredientToMixer(Ingredient.Egg);
-        if(Input.GetKeyDown(KeyCode.Alpha3))AddIngredientToMixer(Ingredient.Flour);
-        if(Input.GetKeyDown(KeyCode.Alpha4))AddIngredientToMixer(Ingredient.Milk);
     }
 
     void OnTriggerEnter(Collider other)
@@ -50,12 +46,12 @@ public class ClientInteraction : MonoBehaviour
     void TakeOrder()
     {
         DishType order = client.dishType;
-        GameManager.Instance.order = order;
+        //GameManager.Instance.order = order;
 
         Debug.Log("Заказ: " + order);
 
-        GameManager.Instance.orderUI.SetActive(true);
-        GameManager.Instance.dishName.text = order.ToString();
+        //GameManager.Instance.orderUI.SetActive(true);
+        //GameManager.Instance.dishName.text = order.ToString();
         
         Ingredient[] ingredients =  Dish.GetIngredients(order);
         currentOrderIngredients.Clear();
@@ -74,7 +70,7 @@ public class ClientInteraction : MonoBehaviour
 
     void UpdateIngredientListUI()
     {
-        GameManager.Instance.ingridients.text = "";
+        //GameManager.Instance.ingridients.text = "";
 
         foreach (var orderIngredient in currentOrderIngredients)
         {
@@ -82,7 +78,7 @@ public class ClientInteraction : MonoBehaviour
                 ? $"<s>{orderIngredient.ingredient}</s>" // Зачёркнутый текст
                 : $"- {orderIngredient.ingredient}";
 
-            GameManager.Instance.ingridients.text += displayText + "\n";
+            //GameManager.Instance.ingridients.text += displayText + "\n";
         }
     }
 
@@ -111,7 +107,20 @@ public class ClientInteraction : MonoBehaviour
                 return;
         }
 
-        Debug.Log("Заказ выполнен!");
-        GameManager.Instance.CompleteOrder(); // Метод для обработки завершения заказа
+        Debug.Log("Все ингредиенты добавлены. Можно смешивать!");
+        isReadyToMix = true; // Активируем возможность смешивания
+        //GameManager.Instance.CompleteOrder(); // Метод для обработки завершения заказа
+    }
+
+    public bool IsIngredientNeeded(Ingredient ingredient)
+    {
+        foreach (var orderIngredient in currentOrderIngredients)
+        {
+            if (orderIngredient.ingredient == ingredient && !orderIngredient.isAdded)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
