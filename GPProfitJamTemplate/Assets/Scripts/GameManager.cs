@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public DishType order;
 
+    [SerializeField] LevelManager levelManager;
+
     [Header("UI")]
     public GameObject orderUI;
     public TextMeshProUGUI dishName;
@@ -32,5 +34,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //if(Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("Level 1");
+    }
+
+    public void CompleteOrder()
+    {
+        levelManager.clients.Clear();
+        if(levelManager.clients.Count == 0) levelManager.CompleteLevel();
     }
 }

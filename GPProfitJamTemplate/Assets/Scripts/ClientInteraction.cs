@@ -112,6 +112,6 @@ public class ClientInteraction : MonoBehaviour
         }
 
         Debug.Log("Заказ выполнен!");
-        //GameManager.Instance.CompleteOrder(); // Метод для обработки завершения заказа
+        GameManager.Instance.CompleteOrder(); // Метод для обработки завершения заказа
     }
 }

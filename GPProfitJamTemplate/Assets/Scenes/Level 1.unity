@@ -3945,6 +3945,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionButton: {fileID: 280200664}
   client: {fileID: 1280422762}
+  currentOrderIngredients: []
 --- !u!114 &1280422762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4092,6 +4093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPaused: 0
   order: 0
+  levelManager: {fileID: 1358649478}
   orderUI: {fileID: 1351171173}
   dishName: {fileID: 395085112}
   ingridients: {fileID: 2030791059}
@@ -4122,10 +4124,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f39c069948dd747b84fc065850f7b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelTime: 500
   clients:
   - {fileID: 0}
   - {fileID: 0}
-  levelTime: 500
   timerText: {fileID: 1711584348}
   winPanel: {fileID: 780369217}
   losePanel: {fileID: 341719513}

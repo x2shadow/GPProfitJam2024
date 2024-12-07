@@ -69,8 +69,11 @@ public class PlayerMovement : MonoBehaviour
         if (move.magnitude >= 0.1f)
         {
             // Поворачиваем персонажа в направлении движения
-            Quaternion toRotation = Quaternion.LookRotation(currentMove, Vector3.up);
-            model.rotation = Quaternion.Lerp(model.rotation, toRotation, Time.deltaTime * 10f);
+            if(Time.timeScale > 0f)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(currentMove, Vector3.up);
+                model.rotation = Quaternion.Lerp(model.rotation, toRotation, Time.deltaTime * 10f);
+            }
         }
        
 
