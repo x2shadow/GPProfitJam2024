@@ -5,6 +5,9 @@ public class PlayerInteraction : MonoBehaviour
     private Ingredient currentIngredient = Ingredient.None;
     private GameObject nearbyObject;
 
+    public bool hasBakedDish = false; // Готовое блюдо в руках
+    public bool hasOrder = false;
+
     public GameObject interactionButton;  // Кнопка "Взять заказ"
 
     void Start()
@@ -30,19 +33,57 @@ public class PlayerInteraction : MonoBehaviour
             }
             else if(nearbyObject.CompareTag("Client"))
             {
-                Debug.Log("OrderTaken");
-                TakeOrder(nearbyObject.GetComponent<Client>());
+                if(hasOrder == false)
+                {
+                    TakeOrder(nearbyObject.GetComponent<Client>());
+                }
+                else if (hasBakedDish)
+                {
+                    Debug.Log($"Вы отдали блюдо клиенту!");
+                    hasBakedDish = false;
+                    hasOrder = false;
+                    OrderManager.Instance.CloseOrderUI();
+                }
+                else
+                {
+                    Debug.Log("У вас нет готового блюда, чтобы отдать клиенту.");
+                }
+
             }
             else if (nearbyObject.CompareTag("Mixer"))
             {
                 AddToMixer(nearbyObject.GetComponent<Mixer>());
+            }
+            else if (nearbyObject.CompareTag("Oven"))
+            {
+                Oven oven = nearbyObject.GetComponent<Oven>();
+                if (oven != null)
+                {
+                    if (oven.hasMixedProduct)
+                    {
+                        oven.StartBaking();
+                    }
+                    else if (oven.hasBakedDish)
+                    {
+                        TakeBakedDish(oven);
+                    }
+                    else if (oven.isBaking)
+                    {
+                        Debug.Log("Продукт всё ещё запекается.");
+                    }
+                    else
+                    {
+                        Debug.Log("В печи ничего нет.");
+                    }
+                }
             }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EggPack") || other.CompareTag("FlourPack") || other.CompareTag("MilkPack") || other.CompareTag("Client")|| other.CompareTag("Mixer"))
+        if (other.CompareTag("EggPack") || other.CompareTag("FlourPack") || other.CompareTag("MilkPack") 
+            || other.CompareTag("Client")|| other.CompareTag("Mixer") || other.CompareTag("Oven"))
         {
             nearbyObject = other.gameObject;
             interactionButton.SetActive(true);
@@ -61,6 +102,7 @@ public class PlayerInteraction : MonoBehaviour
     void TakeOrder(Client client)
     {
         Debug.Log("Взят заказ клиента.");
+        hasOrder = true;
         OrderManager.Instance.InitializeOrder(client.dishType);
     }
 
@@ -93,6 +135,20 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             Debug.Log("У вас ничего нет.");
+        }
+    }
+
+    void TakeBakedDish(Oven oven)
+    {
+        if (!hasBakedDish)
+        {
+            hasBakedDish = true;
+            oven.hasBakedDish = false;
+            Debug.Log("Вы забрали готовое блюдо из печи.");
+        }
+        else
+        {
+            Debug.LogWarning("Вы уже держите готовое блюдо!");
         }
     }
 

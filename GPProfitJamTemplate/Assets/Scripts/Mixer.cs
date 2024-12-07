@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class Mixer : MonoBehaviour
 {
+    [SerializeField] Oven oven;
+
     public bool isReadyToMix = false;
+    public bool IsMixed = false;
 
     public void TryMix()
     {
@@ -13,10 +16,11 @@ public class Mixer : MonoBehaviour
         }
 
         Debug.Log("Ингредиенты смешаны. Блюдо готово!");
+        IsMixed = true;
         isReadyToMix = false;
 
         // Событие готовности к запеканию
-        //GameManager.Instance.CompleteOrder();
+        oven.hasMixedProduct = true;
     }
 
     public void AddIngredientToMixer(Ingredient ingredient)
@@ -43,5 +47,11 @@ public class Mixer : MonoBehaviour
             Debug.Log("Все ингредиенты добавлены. Можно смешивать!");
             isReadyToMix = true;
         }
+    }
+
+    public void ResetMixer()
+    {
+        IsMixed = false;
+        Debug.Log("Миксер очищен.");
     }
 }

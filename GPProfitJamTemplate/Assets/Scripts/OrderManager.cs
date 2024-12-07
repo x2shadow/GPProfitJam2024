@@ -54,6 +54,11 @@ public class OrderManager : MonoBehaviour
         return true;
     }
 
+    public void CloseOrderUI()
+    {
+        orderUI.SetActive(false);
+    }
+
     public void UpdateIngredientListUI()
     {
         ingredientsUI.text = "";
