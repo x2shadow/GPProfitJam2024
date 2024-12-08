@@ -8,6 +8,11 @@ public class Oven : MonoBehaviour
     public float bakingTime = 5f;         // Время запекания
     private float bakingTimer = 0f;
 
+    [Header("AUDIO")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip ovenBakingSound;
+    [SerializeField] AudioClip ovenBakedSound;
+
     void Update()
     {
         if (isBaking)
@@ -40,6 +45,12 @@ public class Oven : MonoBehaviour
         {
             Debug.Log("Процесс запекания начался.");
             isBaking = true;
+
+            // Проигрывание звука
+            if (audioSource != null && ovenBakingSound != null)
+            {
+                audioSource.PlayOneShot(ovenBakingSound);
+            }
         }
         else if (!hasMixedProduct)
         {
@@ -59,5 +70,11 @@ public class Oven : MonoBehaviour
         bakingTimer = 0f;
 
         hasBakedDish = true; // Блюдо готово
+
+        // Проигрывание звука
+        if (audioSource != null && ovenBakedSound != null)
+        {
+            audioSource.PlayOneShot(ovenBakedSound);
+        }
     }
 }

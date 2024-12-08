@@ -14,6 +14,11 @@ public class LevelManager : MonoBehaviour
     public GameObject winPanel; // Панель победы
     public GameObject losePanel; // Панель проигрыша
 
+    [Header("AUDIO")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip winSound;
+    [SerializeField] AudioClip loseSound;
+
     bool isLevelCompleted;
 
     void Start()
@@ -55,12 +60,24 @@ public class LevelManager : MonoBehaviour
             winPanel.SetActive(true);
             timerText.text = "Победа скибидоп ес ес";
             Debug.Log("Уровень завершён!");
+
+            // Проигрывание звука
+            if (audioSource != null && winSound != null)
+            {
+                audioSource.PlayOneShot(winSound);
+            }
         }
         else
         {
             losePanel.SetActive(true);
             timerText.text = "GG XD";
             Debug.Log("Время вышло!");
+
+            // Проигрывание звука
+            if (audioSource != null && loseSound != null)
+            {
+                audioSource.PlayOneShot(loseSound);
+            }
         }
 
         Time.timeScale = 0; // Останавливаем время

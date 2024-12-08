@@ -10434,6 +10434,18 @@ PrefabInstance:
       propertyPath: bakingTime
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7973651334310482178, guid: c11c4db41f6042a46af74bbe9f309c08, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1552942917}
+    - target: {fileID: 7973651334310482178, guid: c11c4db41f6042a46af74bbe9f309c08, type: 3}
+      propertyPath: ovenBakedSound
+      value: 
+      objectReference: {fileID: 8300000, guid: b3bd3269cb0447a4f9c15b4d0b9f7319, type: 3}
+    - target: {fileID: 7973651334310482178, guid: c11c4db41f6042a46af74bbe9f309c08, type: 3}
+      propertyPath: ovenBakingSound
+      value: 
+      objectReference: {fileID: 8300000, guid: d265b4e857be0dd43a76f7ca2651dbc0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
