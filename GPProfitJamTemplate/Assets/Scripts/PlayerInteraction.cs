@@ -98,7 +98,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    void OnInteractButtonPressed()
+    public void OnInteractButtonPressed()
     {
         if (nearbyObject != null)
         {
@@ -114,18 +114,21 @@ public class PlayerInteraction : MonoBehaviour
             {
                 TakeIngredient(Ingredient.Milk);
             }
+            else if (nearbyObject.CompareTag("ChocolatePack"))
+            {
+                TakeIngredient(Ingredient.Chocolate);
+            }
             else if(nearbyObject.CompareTag("Client"))
             {
+                Client client = nearbyObject.GetComponent<Client>();
+
                 if(hasOrder == false)
                 {
-                    TakeOrder(nearbyObject.GetComponent<Client>());
+                    TakeOrder(client);
                 }
                 else if (hasBakedDish)
                 {
-                    Debug.Log($"Вы отдали блюдо клиенту!");
-                    hasBakedDish = false;
-                    hasOrder = false;
-                    OrderManager.Instance.CloseOrderUI();
+                    GiveDishToClient(client);
                 }
                 else
                 {
@@ -162,6 +165,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {

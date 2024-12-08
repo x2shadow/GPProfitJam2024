@@ -46,4 +46,25 @@ public class PauseMenu : MonoBehaviour
 
         SceneManager.LoadScene(currentSceneName);
     }
+
+    public void NextLevel()
+    {
+        // Получаем индекс текущей сцены
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // Получаем общее количество сцен в Build Settings
+        int totalScenes = SceneManager.sceneCountInBuildSettings;
+
+        // Определяем индекс следующей сцены
+        int nextSceneIndex = currentSceneIndex + 1;
+
+        // Если следующей сцены нет (выход за пределы списка), переходим к первой сцене
+        if (nextSceneIndex >= totalScenes)
+        {
+            nextSceneIndex = 0; // Индекс первой сцены
+        }
+
+        // Загружаем следующую сцену
+        SceneManager.LoadScene(nextSceneIndex);
+    }
 }
