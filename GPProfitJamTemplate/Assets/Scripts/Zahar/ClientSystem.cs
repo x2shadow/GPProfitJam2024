@@ -49,7 +49,7 @@ public class ClientSpawnSystem : MonoBehaviour
             // Если все точки заняты, ждем, пока освободится место
             while (nextFreeQueuePointIndex >= queuePoints.Count)
             {
-                Debug.Log("[ClientSpawnSystem]: Все точки заняты. Ожидание освобождения...");
+                //Debug.Log("[ClientSpawnSystem]: Все точки заняты. Ожидание освобождения...");
                 yield return new WaitForSeconds(5f); // Ждем 5 секунд перед повторной проверкой
             }
 
