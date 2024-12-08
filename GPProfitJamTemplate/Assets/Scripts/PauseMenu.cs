@@ -39,4 +39,11 @@ public class PauseMenu : MonoBehaviour
         GameManager.Instance.isPaused = false;
         SceneManager.LoadScene("StartMenu");
     }
+
+    public void Restart()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        SceneManager.LoadScene(currentSceneName);
+    }
 }
