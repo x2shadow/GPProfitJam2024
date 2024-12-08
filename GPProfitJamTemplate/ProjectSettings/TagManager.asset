@@ -10,6 +10,7 @@ TagManager:
   - MilkPack
   - Client
   - Oven
+  - ChocolatePack
   layers:
   - Default
   - TransparentFX

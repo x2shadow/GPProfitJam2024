@@ -37,6 +37,10 @@ public class PlayerInteraction : MonoBehaviour
             {
                 TakeIngredient(Ingredient.Milk);
             }
+            else if (nearbyObject.CompareTag("ChocolatePack"))
+            {
+                TakeIngredient(Ingredient.Chocolate);
+            }
             else if(nearbyObject.CompareTag("Client"))
             {
                 if(hasOrder == false)
@@ -154,7 +158,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EggPack") || other.CompareTag("FlourPack") || other.CompareTag("MilkPack") 
+        if (other.CompareTag("EggPack") || other.CompareTag("FlourPack") || other.CompareTag("MilkPack") || other.CompareTag("ChocolatePack")
             || other.CompareTag("Client")|| other.CompareTag("Mixer") || other.CompareTag("Oven"))
         {
             nearbyObject = other.gameObject;
