@@ -31,7 +31,19 @@ public class OrderManager : MonoBehaviour
         Debug.Log("Заказ: " + dishType);
 
         orderUI.SetActive(true);
-        dishName.text = dishType.ToString();
+        
+        string dishTypeRU = "";
+        
+        switch(dishType)
+        {
+            case DishType.StrawberryCake: dishTypeRU = "Клубничный торт"; break;
+            case DishType.ChocolateCake:  dishTypeRU = "Шоколадный торт"; break;
+            case DishType.Cupcake:        dishTypeRU = "Кекс";            break;
+            case DishType.Cookie:         dishTypeRU = "Печеньки";        break;
+            case DishType.None:           dishTypeRU = "НЕТ БЛЮДА";       break;
+        }
+
+        dishName.text = dishTypeRU;
 
         Ingredient[] ingredients = Dish.GetIngredients(dishType);
         currentOrderIngredients.Clear();
@@ -63,11 +75,22 @@ public class OrderManager : MonoBehaviour
     {
         ingredientsUI.text = "";
 
+        string ingredientRU = "";
+
         foreach (var orderIngredient in currentOrderIngredients)
         {
+            switch(orderIngredient.ingredient)
+            {
+                case Ingredient.Chocolate: ingredientRU = "Шоколад";         break;
+                case Ingredient.Egg:       ingredientRU = "Яйцо";            break;
+                case Ingredient.Milk:      ingredientRU = "Молоко";          break;
+                case Ingredient.Flour:     ingredientRU = "Мука";            break;
+                case Ingredient.None:      ingredientRU = "НЕТ ИНГРЕДИЕНТА"; break;
+            }
+
             string displayText = orderIngredient.isAdded
-                ? $"<s>{orderIngredient.ingredient}</s>" // Зачеркнутый текст
-                : $"- {orderIngredient.ingredient}";
+                ? $"<s>{ingredientRU}</s>" // Зачеркнутый текст
+                : $"- {ingredientRU}";
 
             ingredientsUI.text += displayText + "\n";
         }
