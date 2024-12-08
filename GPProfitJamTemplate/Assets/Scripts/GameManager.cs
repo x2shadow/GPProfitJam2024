@@ -25,5 +25,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //if(Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("Level 1");
+        if(Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("Level 2");
     }
 }
