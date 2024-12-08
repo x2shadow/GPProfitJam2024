@@ -23,8 +23,11 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject interactionButton;  // Кнопка "Взять заказ"
     public Button     interactButtonMobile; // Ссылка на кнопку Interact
 
+    bool isMobilePlatform;
+
     void Start()
     {
+        isMobilePlatform = Application.isMobilePlatform;
         interactionButton.SetActive(false);
         interactButtonMobile.gameObject.SetActive(false);
         interactButtonMobile.onClick.AddListener(OnInteractButtonPressed);
@@ -95,6 +98,18 @@ public class PlayerInteraction : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    void SetInteractButton(bool status)
+    {
+        if (Application.isMobilePlatform)
+        {
+            interactButtonMobile.gameObject.SetActive(status);
+        }
+        else
+        {
+            interactionButton.SetActive(status);
         }
     }
 
@@ -173,8 +188,7 @@ public class PlayerInteraction : MonoBehaviour
             other.CompareTag("ChocolatePack") || other.CompareTag("Mixer") || other.CompareTag("Oven"))
         {
             nearbyObject = other.gameObject;
-            interactionButton.SetActive(true);
-            interactButtonMobile.gameObject.SetActive(true);
+            SetInteractButton(true);
         }
         else if (other.CompareTag("Client"))
         {
@@ -184,8 +198,7 @@ public class PlayerInteraction : MonoBehaviour
                 (clientSystem.queue.Count > 0 && clientSystem.queue.Peek() == client.gameObject))
             {
                 nearbyObject = other.gameObject;
-                interactionButton.SetActive(true);
-                interactButtonMobile.gameObject.SetActive(true);
+                SetInteractButton(true);
             }
         }
     }
@@ -196,8 +209,7 @@ public class PlayerInteraction : MonoBehaviour
         if (other.gameObject == nearbyObject)
         {
             nearbyObject = null;
-            interactionButton.SetActive(false);
-            interactButtonMobile.gameObject.SetActive(false);
+            SetInteractButton(false);
         }
     }
 
