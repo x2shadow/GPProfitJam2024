@@ -15,6 +15,8 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip takeOrderSound;
     [SerializeField] AudioClip giveOrderSound; // Звук отдачи заказа
+    [SerializeField] AudioClip pickIngredientSound; // Звук подбора ингредиента
+
 
 
     [Header("UI")]
@@ -255,6 +257,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             currentIngredient = ingredient;
             Debug.Log($"Вы взяли {ingredient}.");
+
+            // Проигрывание звука
+            if (audioSource != null && pickIngredientSound != null)
+            {
+                audioSource.PlayOneShot(pickIngredientSound);
+            }
         }
     }
 

@@ -316,6 +316,8 @@ MonoBehaviour:
   smoothStopTime: 0.08
   joystick: {fileID: 1576881772}
   joystickActive: 0
+  audioSource: {fileID: 1552942917}
+  jumpSound: {fileID: 8300000, guid: 11c937dc93ea88e4d89a859b91a8c0df, type: 3}
 --- !u!143 &11691183
 CharacterController:
   m_ObjectHideFlags: 0
@@ -358,8 +360,9 @@ MonoBehaviour:
   hasOrder: 0
   clientSystem: {fileID: 1470461412}
   audioSource: {fileID: 1552942917}
-  takeOrderSound: {fileID: 8300000, guid: cc38a4a30f5565c4498c6cf1ccad2a08, type: 3}
-  giveOrderSound: {fileID: 0}
+  takeOrderSound: {fileID: 8300000, guid: 49c5a9f6580111a41831f34bab0dc99a, type: 3}
+  giveOrderSound: {fileID: 8300000, guid: ae2f90c9394272d4babb64827d2deef1, type: 3}
+  pickIngredientSound: {fileID: 8300000, guid: 4a64b5ad508a52448ad2d63e51252a8e, type: 3}
   interactionButton: {fileID: 281652768}
   interactButtonMobile: {fileID: 280200666}
 --- !u!1 &45088125
@@ -10318,6 +10321,14 @@ PrefabInstance:
       propertyPath: oven
       value: 
       objectReference: {fileID: 730246843}
+    - target: {fileID: 6877095367951768764, guid: 3d4be6ebe15955247838e4919b1c5cc4, type: 3}
+      propertyPath: mixerSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 20c1b0d2af3a87b45b0d644df17da3cb, type: 3}
+    - target: {fileID: 6877095367951768764, guid: 3d4be6ebe15955247838e4919b1c5cc4, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1552942917}
     - target: {fileID: 7205867307076935583, guid: 3d4be6ebe15955247838e4919b1c5cc4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.507

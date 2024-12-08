@@ -7,12 +7,22 @@ public class Mixer : MonoBehaviour
     public bool isReadyToMix = false;
     public bool IsMixed = false;
 
+    [Header("AUDIO")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip mixerSound;
+
     public void TryMix()
     {
         if (!OrderManager.Instance.IsOrderComplete())
         {
             Debug.Log("Ингредиенты ещё не добавлены.");
             return;
+        }
+
+        // Проигрывание звука
+        if (audioSource != null && mixerSound != null)
+        {
+            audioSource.PlayOneShot(mixerSound);
         }
 
         Debug.Log("Ингредиенты смешаны. Блюдо готово!");

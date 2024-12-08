@@ -22,6 +22,10 @@ public class PlayerMovement : MonoBehaviour
     float horizontal;
     float vertical;
 
+    [Header("AUDIO")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip jumpSound;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -96,6 +100,12 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);  // Формула для прыжка
+
+            // Проигрывание звука
+            if (audioSource != null && jumpSound != null)
+            {
+                audioSource.PlayOneShot(jumpSound);
+            }
         }
     }
 }
