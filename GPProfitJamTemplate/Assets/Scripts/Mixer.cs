@@ -10,6 +10,7 @@ public class Mixer : MonoBehaviour
     [Header("AUDIO")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip mixerSound;
+    [SerializeField] AudioClip mixerFilledSound;
 
     public void TryMix()
     {
@@ -41,6 +42,13 @@ public class Mixer : MonoBehaviour
             {
                 orderIngredient.isAdded = true;
                 Debug.Log($"Добавлен ингредиент {ingredient}");
+
+                // Проигрывание звука
+                if (audioSource != null && mixerFilledSound != null)
+                {
+                    audioSource.PlayOneShot(mixerFilledSound);
+                }
+
                 OrderManager.Instance.UpdateIngredientListUI();
                 CheckIfOrderCompleted();
                 return;

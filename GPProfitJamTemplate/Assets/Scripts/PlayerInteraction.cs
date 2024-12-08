@@ -16,7 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] AudioClip takeOrderSound;
     [SerializeField] AudioClip giveOrderSound; // Звук отдачи заказа
     [SerializeField] AudioClip pickIngredientSound; // Звук подбора ингредиента
-
+    [SerializeField] AudioClip pickFromOvenSound; // Звук сбора из печи
 
 
     [Header("UI")]
@@ -292,6 +292,12 @@ public class PlayerInteraction : MonoBehaviour
             hasBakedDish = true;
             oven.hasBakedDish = false;
             Debug.Log("Вы забрали готовое блюдо из печи.");
+
+            // Проигрывание звука
+            if (audioSource != null && pickFromOvenSound != null)
+            {
+                audioSource.PlayOneShot(pickFromOvenSound);
+            }
         }
         else
         {

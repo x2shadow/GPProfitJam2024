@@ -363,6 +363,7 @@ MonoBehaviour:
   takeOrderSound: {fileID: 8300000, guid: 49c5a9f6580111a41831f34bab0dc99a, type: 3}
   giveOrderSound: {fileID: 8300000, guid: ae2f90c9394272d4babb64827d2deef1, type: 3}
   pickIngredientSound: {fileID: 8300000, guid: 4a64b5ad508a52448ad2d63e51252a8e, type: 3}
+  pickFromOvenSound: {fileID: 8300000, guid: 4a64b5ad508a52448ad2d63e51252a8e, type: 3}
   interactionButton: {fileID: 281652768}
   interactButtonMobile: {fileID: 280200666}
 --- !u!1 &45088125
@@ -2792,12 +2793,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487819226}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 1.9451, z: 8.99}
   m_LocalScale: {x: 1, y: 3.8901, z: 14.9709215}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1068938393}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &499539526
 GameObject:
@@ -5302,6 +5303,40 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2537958509961967394, guid: 6ee35f794ba568445beeb8de299b8f65, type: 3}
   m_PrefabInstance: {fileID: 8586054335735502153}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1068938392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1068938393}
+  m_Layer: 0
+  m_Name: Walls
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1068938393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068938392}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1206612942}
+  - {fileID: 2130368071}
+  - {fileID: 487819230}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1085666360 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3232977857793448962, guid: 70e71e262fd4e214ba2fb701a25f0dc3, type: 3}
@@ -6005,12 +6040,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206612938}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -6.65, y: 1.9451, z: 3.4941}
   m_LocalScale: {x: 1, y: 3.8901, z: 14.444052}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1068938393}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1219128030
 GameObject:
@@ -6880,7 +6915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02690ac397c583a4c8229e13f8644c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientsNumber: 5
+  clientsNumber: 2
   clientsDone: 0
   spawnrate: 2
   levelManager: {fileID: 1973573419}
@@ -9065,6 +9100,9 @@ MonoBehaviour:
   timerText: {fileID: 1711584348}
   winPanel: {fileID: 780369217}
   losePanel: {fileID: 341719513}
+  audioSource: {fileID: 1552942917}
+  winSound: {fileID: 8300000, guid: 6415525dd8abd754b93a7b6661304239, type: 3}
+  loseSound: {fileID: 8300000, guid: 535660024951e4142a37e4d7ffd6d44a, type: 3}
 --- !u!1 &2001859953
 GameObject:
   m_ObjectHideFlags: 0
@@ -9882,12 +9920,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2130368067}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6.63, y: 1.9451, z: 3.4941}
   m_LocalScale: {x: 1, y: 3.8901, z: 14.444052}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1068938393}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2138770450
 GameObject:
@@ -10329,6 +10367,10 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 1552942917}
+    - target: {fileID: 6877095367951768764, guid: 3d4be6ebe15955247838e4919b1c5cc4, type: 3}
+      propertyPath: mixerFilledSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 4a64b5ad508a52448ad2d63e51252a8e, type: 3}
     - target: {fileID: 7205867307076935583, guid: 3d4be6ebe15955247838e4919b1c5cc4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.507
@@ -10445,7 +10487,11 @@ PrefabInstance:
     - target: {fileID: 7973651334310482178, guid: c11c4db41f6042a46af74bbe9f309c08, type: 3}
       propertyPath: ovenBakingSound
       value: 
-      objectReference: {fileID: 8300000, guid: d265b4e857be0dd43a76f7ca2651dbc0, type: 3}
+      objectReference: {fileID: 8300000, guid: 87f3be0ae04988344b7197150b9cebfe, type: 3}
+    - target: {fileID: 7973651334310482178, guid: c11c4db41f6042a46af74bbe9f309c08, type: 3}
+      propertyPath: ovenFilledSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 4a64b5ad508a52448ad2d63e51252a8e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10640,6 +10686,4 @@ SceneRoots:
   - {fileID: 1099620881}
   - {fileID: 2127692166}
   - {fileID: 966827059}
-  - {fileID: 1206612942}
-  - {fileID: 2130368071}
-  - {fileID: 487819230}
+  - {fileID: 1068938393}

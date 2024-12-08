@@ -12,6 +12,7 @@ public class Oven : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip ovenBakingSound;
     [SerializeField] AudioClip ovenBakedSound;
+    [SerializeField] AudioClip ovenFilledSound;
 
     void Update()
     {
@@ -32,6 +33,12 @@ public class Oven : MonoBehaviour
         {
             Debug.Log("Смешанный продукт добавлен в печь.");
             hasMixedProduct = true;
+
+            // Проигрывание звука
+            if (audioSource != null && ovenFilledSound != null)
+            {
+                audioSource.PlayOneShot(ovenFilledSound);
+            }
         }
         else
         {
