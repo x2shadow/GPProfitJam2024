@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pausePanel;
     [SerializeField] GameObject gameplayPanel;
+    [SerializeField] GameObject bgmusic;
 
     void Update()
     {
@@ -63,9 +64,11 @@ public class PauseMenu : MonoBehaviour
         if (nextSceneIndex >= totalScenes)
         {
             nextSceneIndex = 0; // Индекс первой сцены
+            Destroy(bgmusic);
         }
 
         // Загружаем следующую сцену
         SceneManager.LoadScene(nextSceneIndex);
+        Time.timeScale = 1;
     }
 }
