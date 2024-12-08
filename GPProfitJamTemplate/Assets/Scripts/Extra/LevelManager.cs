@@ -51,7 +51,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void EndLevel(bool isWin)
+    public void EndLevel(bool isWin)
     {
         isLevelCompleted = true;
 

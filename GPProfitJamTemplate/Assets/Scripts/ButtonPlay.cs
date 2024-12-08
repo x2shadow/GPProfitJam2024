@@ -8,5 +8,6 @@ public class ButtonPlay : MonoBehaviour
     public void PlayGame()
     {
         SceneManager.LoadScene("Level 1");
+        Time.timeScale = 1f; 
     }
 }
