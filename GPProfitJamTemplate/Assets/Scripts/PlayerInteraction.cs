@@ -8,9 +8,16 @@ public class PlayerInteraction : MonoBehaviour
 
     public bool hasBakedDish = false; // Готовое блюдо в руках
     public bool hasOrder = false;
-
+    
     [SerializeField] ClientSpawnSystem clientSystem;
 
+    [Header("AUDIO")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip takeOrderSound;
+    [SerializeField] AudioClip giveOrderSound; // Звук отдачи заказа
+
+
+    [Header("UI")]
     public GameObject interactionButton;  // Кнопка "Взять заказ"
     public Button     interactButtonMobile; // Ссылка на кнопку Interact
 
@@ -197,6 +204,12 @@ public class PlayerInteraction : MonoBehaviour
             hasOrder = true;
             clientSystem.OrderTaken();
             OrderManager.Instance.InitializeOrder(client.dishType);
+
+            // Проигрывание звука
+            if (audioSource != null && takeOrderSound != null)
+            {
+                audioSource.PlayOneShot(takeOrderSound);
+            }
         }
         else
         {
@@ -219,6 +232,12 @@ public class PlayerInteraction : MonoBehaviour
             nearbyObject = null;
             interactionButton.SetActive(false);
             interactButtonMobile.gameObject.SetActive(false);
+
+            // Проигрывание звука
+            if (audioSource != null && giveOrderSound != null)
+            {
+                audioSource.PlayOneShot(giveOrderSound);
+            }
         }
         else
         {
