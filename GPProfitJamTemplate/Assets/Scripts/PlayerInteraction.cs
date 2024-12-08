@@ -43,17 +43,15 @@ public class PlayerInteraction : MonoBehaviour
             }
             else if(nearbyObject.CompareTag("Client"))
             {
+                Client client = nearbyObject.GetComponent<Client>();
+
                 if(hasOrder == false)
                 {
-                    TakeOrder(nearbyObject.GetComponent<Client>());
+                    TakeOrder(client);
                 }
                 else if (hasBakedDish)
                 {
-                    Debug.Log($"Вы отдали блюдо клиенту!");
-                    hasBakedDish = false;
-                    hasOrder = false;
-                    clientSystem.OrderGiven();
-                    OrderManager.Instance.CloseOrderUI();
+                    GiveDishToClient(client);
                 }
                 else
                 {
@@ -158,14 +156,27 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EggPack") || other.CompareTag("FlourPack") || other.CompareTag("MilkPack") || other.CompareTag("ChocolatePack")
-            || other.CompareTag("Client")|| other.CompareTag("Mixer") || other.CompareTag("Oven"))
+        if (other.CompareTag("EggPack") || other.CompareTag("FlourPack") || other.CompareTag("MilkPack") || 
+            other.CompareTag("ChocolatePack") || other.CompareTag("Mixer") || other.CompareTag("Oven"))
         {
             nearbyObject = other.gameObject;
             interactionButton.SetActive(true);
             interactButtonMobile.gameObject.SetActive(true);
         }
+        else if (other.CompareTag("Client"))
+        {
+            Client client = other.GetComponent<Client>();
+            // Отображаем кнопку только для клиента на выдаче или первого в очереди
+            if (clientSystem.waitingClient == client.gameObject || 
+                (clientSystem.queue.Count > 0 && clientSystem.queue.Peek() == client.gameObject))
+            {
+                nearbyObject = other.gameObject;
+                interactionButton.SetActive(true);
+                interactButtonMobile.gameObject.SetActive(true);
+            }
+        }
     }
+
 
     private void OnTriggerExit(Collider other)
     {
@@ -179,10 +190,40 @@ public class PlayerInteraction : MonoBehaviour
 
     void TakeOrder(Client client)
     {
-        Debug.Log("Взят заказ клиента.");
-        hasOrder = true;
-        clientSystem.OrderTaken();
-        OrderManager.Instance.InitializeOrder(client.dishType);
+        // Проверка, является ли клиент первым в очереди
+        if (clientSystem.queue.Peek() == client.gameObject)
+        {
+            Debug.Log("Взят заказ клиента.");
+            hasOrder = true;
+            clientSystem.OrderTaken();
+            OrderManager.Instance.InitializeOrder(client.dishType);
+        }
+        else
+        {
+            Debug.LogWarning("Вы можете взять заказ только у первого клиента в очереди.");
+        }
+    }
+
+    void GiveDishToClient(Client client)
+    {
+        // Проверка, является ли клиент на точке ожидания
+        if (clientSystem.waitingClient == client.gameObject)
+        {
+            Debug.Log("Вы отдали блюдо клиенту.");
+            hasBakedDish = false;
+            hasOrder = false;
+            clientSystem.OrderGiven();
+            OrderManager.Instance.CloseOrderUI();
+
+            // Сброс nearbyObject и отключение кнопки
+            nearbyObject = null;
+            interactionButton.SetActive(false);
+            interactButtonMobile.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("Этот клиент не ожидает заказ.");
+        }
     }
 
     void TakeIngredient(Ingredient ingredient)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ClientSpawnSystem : MonoBehaviour
 {
-    Queue<GameObject> queue; // Очередь клиентов
+    public Queue<GameObject> queue; // Очередь клиентов
     public int clientsNumber;
     public int clientsDone; //Количество обслуженных клиентов
     public float spawnrate;
@@ -17,7 +17,8 @@ public class ClientSpawnSystem : MonoBehaviour
     [SerializeField] GameObject spawnPoint;          // Точка спавна
     [SerializeField] List<GameObject> queuePoints;  //  Точки в очереди
     
-    GameObject waitingClient; // Клиент, ожидающий выдачи заказа
+    [HideInInspector]
+    public GameObject waitingClient; // Клиент, ожидающий выдачи заказа
 
     int nextFreeQueuePointIndex; // Индекс самой дальней свободной точки
 
