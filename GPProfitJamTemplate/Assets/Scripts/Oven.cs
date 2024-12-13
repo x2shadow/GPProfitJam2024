@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Oven : MonoBehaviour
 {
@@ -8,17 +9,26 @@ public class Oven : MonoBehaviour
     public float bakingTime = 5f;         // Время запекания
     private float bakingTimer = 0f;
 
+    [SerializeField] Slider ovenSlider;
+
     [Header("AUDIO")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip ovenBakingSound;
     [SerializeField] AudioClip ovenBakedSound;
     [SerializeField] AudioClip ovenFilledSound;
 
+    void Start()
+    {
+        ovenSlider.gameObject.SetActive(false);
+        ovenSlider.maxValue = bakingTime;
+    }
+
     void Update()
     {
         if (isBaking)
         {
             bakingTimer += Time.deltaTime;
+            ovenSlider.value = bakingTimer;
 
             if (bakingTimer >= bakingTime)
             {
@@ -52,6 +62,7 @@ public class Oven : MonoBehaviour
         {
             Debug.Log("Процесс запекания начался.");
             isBaking = true;
+            ovenSlider.gameObject.SetActive(true);
 
             // Проигрывание звука
             if (audioSource != null && ovenBakingSound != null)
@@ -75,6 +86,7 @@ public class Oven : MonoBehaviour
         hasMixedProduct = false;
         isBaking = false;
         bakingTimer = 0f;
+        ovenSlider.gameObject.SetActive(false);
 
         hasBakedDish = true; // Блюдо готово
 
