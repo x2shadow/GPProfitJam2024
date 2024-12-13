@@ -245,7 +245,7 @@ public class PlayerInteraction : MonoBehaviour
             hasBakedDish = false;
             hasOrder = false;
             clientSystem.OrderGiven();
-            OrderManager.Instance.CloseOrderUI();
+            OrderUIManager.Instance.CloseOrderUI();
 
             // Сброс nearbyObject и отключение кнопки
             nearbyObject = null;

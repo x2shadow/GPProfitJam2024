@@ -49,7 +49,7 @@ public class Mixer : MonoBehaviour
                     audioSource.PlayOneShot(mixerFilledSound);
                 }
 
-                OrderManager.Instance.UpdateIngredientListUI();
+                OrderUIManager.Instance.UpdateIngredients(OrderManager.Instance.currentOrderIngredients);
                 CheckIfOrderCompleted();
                 return;
             }

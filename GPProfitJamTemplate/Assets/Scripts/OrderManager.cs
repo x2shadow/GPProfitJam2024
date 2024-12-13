@@ -1,22 +1,19 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class OrderManager : MonoBehaviour
 {
     public static OrderManager Instance;
 
     public List<OrderIngredient> currentOrderIngredients = new List<OrderIngredient>();
-    
-    [Header("UI")]
-    public GameObject orderUI;
-    public TextMeshProUGUI dishName;
-    public TextMeshProUGUI ingredientsUI;
 
-    void Awake()
+    public event Action OnOrderCompleted; // Событие завершения заказа
+
+    private void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
@@ -28,22 +25,7 @@ public class OrderManager : MonoBehaviour
 
     public void InitializeOrder(DishType dishType)
     {
-        Debug.Log("Заказ: " + dishType);
-
-        orderUI.SetActive(true);
-        
-        string dishTypeRU = "";
-        
-        switch(dishType)
-        {
-            case DishType.StrawberryCake: dishTypeRU = "Клубничный торт"; break;
-            case DishType.ChocolateCake:  dishTypeRU = "Шоколадный торт"; break;
-            case DishType.Cupcake:        dishTypeRU = "Кекс";            break;
-            case DishType.Cookie:         dishTypeRU = "Печеньки";        break;
-            case DishType.None:           dishTypeRU = "НЕТ БЛЮДА";       break;
-        }
-
-        dishName.text = dishTypeRU;
+        Debug.Log("Инициализация заказа: " + dishType);
 
         Ingredient[] ingredients = Dish.GetIngredients(dishType);
         currentOrderIngredients.Clear();
@@ -53,7 +35,7 @@ public class OrderManager : MonoBehaviour
             currentOrderIngredients.Add(new OrderIngredient { ingredient = ingredient, isAdded = false });
         }
 
-        UpdateIngredientListUI();
+        UpdateOrderUI(dishType, currentOrderIngredients);
     }
 
     public bool IsOrderComplete()
@@ -66,33 +48,31 @@ public class OrderManager : MonoBehaviour
         return true;
     }
 
-    public void CloseOrderUI()
+    public void MarkIngredientAdded(Ingredient ingredient)
     {
-        orderUI.SetActive(false);
+        var orderIngredient = currentOrderIngredients.Find(oi => oi.ingredient == ingredient && !oi.isAdded);
+        if (orderIngredient != null)
+        {
+            orderIngredient.isAdded = true;
+            Debug.Log($"Ингредиент {ingredient} добавлен!");
+
+            UpdateIngredientListUI();
+
+            if (IsOrderComplete())
+            {
+                Debug.Log("Заказ выполнен!");
+                OnOrderCompleted?.Invoke();
+            }
+        }
     }
 
-    public void UpdateIngredientListUI()
+    private void UpdateOrderUI(DishType dishType, List<OrderIngredient> ingredients)
     {
-        ingredientsUI.text = "";
+        OrderUIManager.Instance.ShowOrder(dishType, ingredients);
+    }
 
-        string ingredientRU = "";
-
-        foreach (var orderIngredient in currentOrderIngredients)
-        {
-            switch(orderIngredient.ingredient)
-            {
-                case Ingredient.Chocolate: ingredientRU = "Шоколад";         break;
-                case Ingredient.Egg:       ingredientRU = "Яйцо";            break;
-                case Ingredient.Milk:      ingredientRU = "Молоко";          break;
-                case Ingredient.Flour:     ingredientRU = "Мука";            break;
-                case Ingredient.None:      ingredientRU = "НЕТ ИНГРЕДИЕНТА"; break;
-            }
-
-            string displayText = orderIngredient.isAdded
-                ? $"<s>{ingredientRU}</s>" // Зачеркнутый текст
-                : $"- {ingredientRU}";
-
-            ingredientsUI.text += displayText + "\n";
-        }
+    private void UpdateIngredientListUI()
+    {
+        OrderUIManager.Instance.UpdateIngredients(currentOrderIngredients);
     }
 }
