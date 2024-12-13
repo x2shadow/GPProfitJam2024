@@ -226,7 +226,8 @@ public class PlayerInteraction : MonoBehaviour
             // Проигрывание звука
             if (audioSource != null && takeOrderSound != null)
             {
-                audioSource.PlayOneShot(takeOrderSound);
+                SoundManager.Instance.PlaySound("OrderTaken");
+                //audioSource.PlayOneShot(takeOrderSound);
             }
         }
         else
@@ -254,7 +255,8 @@ public class PlayerInteraction : MonoBehaviour
             // Проигрывание звука
             if (audioSource != null && giveOrderSound != null)
             {
-                audioSource.PlayOneShot(giveOrderSound);
+                SoundManager.Instance.PlaySound("OrderGiven");
+                //audioSource.PlayOneShot(giveOrderSound);
             }
         }
         else

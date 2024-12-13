@@ -7746,6 +7746,7 @@ Transform:
   - {fileID: 1973573418}
   - {fileID: 963691042}
   - {fileID: 1470461413}
+  - {fileID: 1881009172}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1361918384
@@ -10791,6 +10792,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857064196}
   m_CullTransparentMesh: 1
+--- !u!1 &1881009171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1881009172}
+  - component: {fileID: 1881009173}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1881009172
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881009171}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1358649477}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1881009173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881009171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025b015c4e6b04f49b48cd25e0524145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: OrderTaken
+    clip: {fileID: 8300000, guid: 49c5a9f6580111a41831f34bab0dc99a, type: 3}
+    volume: 1
+  - name: OrderGiven
+    clip: {fileID: 8300000, guid: ae2f90c9394272d4babb64827d2deef1, type: 3}
+    volume: 1
 --- !u!1 &1891388128
 GameObject:
   m_ObjectHideFlags: 0
@@ -13093,6 +13145,10 @@ PrefabInstance:
     - target: {fileID: 3701542406335777411, guid: c11c4db41f6042a46af74bbe9f309c08, type: 3}
       propertyPath: m_Name
       value: Oven
+      objectReference: {fileID: 0}
+    - target: {fileID: 4856801008352019032, guid: c11c4db41f6042a46af74bbe9f309c08, type: 3}
+      propertyPath: m_Value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5097982928543533007, guid: c11c4db41f6042a46af74bbe9f309c08, type: 3}
       propertyPath: m_IsActive
