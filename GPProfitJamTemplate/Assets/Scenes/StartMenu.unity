@@ -703,7 +703,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startMenuMusic: {fileID: 8300000, guid: ecff6a9fe9ed32e4e9a516dde18190cc, type: 3}
-  level1Music: {fileID: 0}
+  level1Music: {fileID: 8300000, guid: 09bd5d8491d9c984aba318b2413a6de5, type: 3}
 --- !u!1 &713069593
 GameObject:
   m_ObjectHideFlags: 0
