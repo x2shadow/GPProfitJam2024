@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class PlayerInteraction : MonoBehaviour
 {
     private Ingredient currentIngredient = Ingredient.None;
-    private GameObject nearbyObject;
+    private IInteractable nearbyInteractable;
 
     public bool hasBakedDish = false; // Готовое блюдо в руках
     public bool hasOrder = false;
@@ -30,74 +30,14 @@ public class PlayerInteraction : MonoBehaviour
         isMobilePlatform = Application.isMobilePlatform;
         interactionButton.SetActive(false);
         interactButtonMobile.gameObject.SetActive(false);
-        interactButtonMobile.onClick.AddListener(OnInteractButtonPressed);
+        //interactButtonMobile.onClick.AddListener(OnInteractButtonPressed);
     }
 
     void Update()
     {
-        if (nearbyObject != null && Input.GetKeyDown(KeyCode.E))
+        if (nearbyInteractable != null && Input.GetKeyDown("Interact"))
         {
-            if (nearbyObject.CompareTag("EggPack"))
-            {
-                TakeIngredient(Ingredient.Egg);
-            }
-            else if (nearbyObject.CompareTag("FlourPack"))
-            {
-                TakeIngredient(Ingredient.Flour);
-            }
-            else if (nearbyObject.CompareTag("MilkPack"))
-            {
-                TakeIngredient(Ingredient.Milk);
-            }
-            else if (nearbyObject.CompareTag("ChocolatePack"))
-            {
-                TakeIngredient(Ingredient.Chocolate);
-            }
-            else if(nearbyObject.CompareTag("Client"))
-            {
-                Client client = nearbyObject.GetComponent<Client>();
-
-                if(hasOrder == false)
-                {
-                    TakeOrder(client);
-                }
-                else if (hasBakedDish)
-                {
-                    GiveDishToClient(client);
-                }
-                else
-                {
-                    Debug.Log("У вас нет готового блюда, чтобы отдать клиенту.");
-                }
-
-            }
-            else if (nearbyObject.CompareTag("Mixer"))
-            {
-                AddToMixer(nearbyObject.GetComponent<Mixer>());
-            }
-            else if (nearbyObject.CompareTag("Oven"))
-            {
-                Oven oven = nearbyObject.GetComponent<Oven>();
-                if (oven != null)
-                {
-                    if (oven.hasMixedProduct)
-                    {
-                        oven.StartBaking();
-                    }
-                    else if (oven.hasBakedDish)
-                    {
-                        TakeBakedDish(oven);
-                    }
-                    else if (oven.isBaking)
-                    {
-                        Debug.Log("Продукт всё ещё запекается.");
-                    }
-                    else
-                    {
-                        Debug.Log("В печи ничего нет.");
-                    }
-                }
-            }
+            nearbyInteractable.Interact(this);
         }
     }
 
@@ -113,103 +53,26 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    public void OnInteractButtonPressed()
+    void OnTriggerEnter(Collider other)
     {
-        if (nearbyObject != null)
+        // Проверяем, реализует ли объект интерфейс IInteractable
+        nearbyInteractable = other.GetComponent<IInteractable>();
+        if (nearbyInteractable != null)
         {
-            if (nearbyObject.CompareTag("EggPack"))
-            {
-                TakeIngredient(Ingredient.Egg);
-            }
-            else if (nearbyObject.CompareTag("FlourPack"))
-            {
-                TakeIngredient(Ingredient.Flour);
-            }
-            else if (nearbyObject.CompareTag("MilkPack"))
-            {
-                TakeIngredient(Ingredient.Milk);
-            }
-            else if (nearbyObject.CompareTag("ChocolatePack"))
-            {
-                TakeIngredient(Ingredient.Chocolate);
-            }
-            else if(nearbyObject.CompareTag("Client"))
-            {
-                Client client = nearbyObject.GetComponent<Client>();
-
-                if(hasOrder == false)
-                {
-                    TakeOrder(client);
-                }
-                else if (hasBakedDish)
-                {
-                    GiveDishToClient(client);
-                }
-                else
-                {
-                    Debug.Log("У вас нет готового блюда, чтобы отдать клиенту.");
-                }
-
-            }
-            else if (nearbyObject.CompareTag("Mixer"))
-            {
-                AddToMixer(nearbyObject.GetComponent<Mixer>());
-            }
-            else if (nearbyObject.CompareTag("Oven"))
-            {
-                Oven oven = nearbyObject.GetComponent<Oven>();
-                if (oven != null)
-                {
-                    if (oven.hasMixedProduct)
-                    {
-                        oven.StartBaking();
-                    }
-                    else if (oven.hasBakedDish)
-                    {
-                        TakeBakedDish(oven);
-                    }
-                    else if (oven.isBaking)
-                    {
-                        Debug.Log("Продукт всё ещё запекается.");
-                    }
-                    else
-                    {
-                        Debug.Log("В печи ничего нет.");
-                    }
-                }
-            }
+            // Показываем подсказку
+            interactionButton.SetActive(true);
+            //interactionButtonText.text = nearbyInteractable.GetInteractionHint();
+            Debug.Log(nearbyInteractable.GetInteractionHint());
         }
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("EggPack") || other.CompareTag("FlourPack") || other.CompareTag("MilkPack") || 
-            other.CompareTag("ChocolatePack") || other.CompareTag("Mixer") || other.CompareTag("Oven"))
+        if (other.GetComponent<IInteractable>() == nearbyInteractable)
         {
-            nearbyObject = other.gameObject;
-            SetInteractButton(true);
-        }
-        else if (other.CompareTag("Client"))
-        {
-            Client client = other.GetComponent<Client>();
-            // Отображаем кнопку только для клиента на выдаче или первого в очереди
-            if (clientSystem.waitingClient == client.gameObject || 
-                (clientSystem.queue.Count > 0 && clientSystem.queue.Peek() == client.gameObject))
-            {
-                nearbyObject = other.gameObject;
-                SetInteractButton(true);
-            }
-        }
-    }
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == nearbyObject)
-        {
-            nearbyObject = null;
-            SetInteractButton(false);
+            nearbyInteractable = null;
+            interactionButton.SetActive(false);
         }
     }
 
@@ -224,11 +87,8 @@ public class PlayerInteraction : MonoBehaviour
             OrderManager.Instance.InitializeOrder(client.dishType);
 
             // Проигрывание звука
-            if (audioSource != null && takeOrderSound != null)
-            {
-                SoundManager.Instance.PlaySound("OrderTaken");
-                //audioSource.PlayOneShot(takeOrderSound);
-            }
+            SoundManager.Instance.PlaySound("OrderTaken");
+
         }
         else
         {
@@ -247,17 +107,14 @@ public class PlayerInteraction : MonoBehaviour
             clientSystem.OrderGiven();
             OrderUIManager.Instance.CloseOrderUI();
 
-            // Сброс nearbyObject и отключение кнопки
-            nearbyObject = null;
+            // Сброс nearbyInteractable и отключение кнопки
+            nearbyInteractable = null;
             interactionButton.SetActive(false);
             interactButtonMobile.gameObject.SetActive(false);
 
             // Проигрывание звука
-            if (audioSource != null && giveOrderSound != null)
-            {
-                SoundManager.Instance.PlaySound("OrderGiven");
-                //audioSource.PlayOneShot(giveOrderSound);
-            }
+            SoundManager.Instance.PlaySound("OrderGiven");
+ 
         }
         else
         {
@@ -265,7 +122,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    void TakeIngredient(Ingredient ingredient)
+    public void TakeIngredient(Ingredient ingredient)
     {
         if (currentIngredient == ingredient)
         {
@@ -285,7 +142,7 @@ public class PlayerInteraction : MonoBehaviour
     }
 
 
-    void AddToMixer(Mixer mixer)
+    public void AddToMixer(Mixer mixer)
     {
         if (!mixer.isReadyToMix && currentIngredient != Ingredient.None) // Добавить в миксер
         {

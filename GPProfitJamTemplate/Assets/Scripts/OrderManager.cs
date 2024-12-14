@@ -7,6 +7,8 @@ public class OrderManager : MonoBehaviour
 {
     public static OrderManager Instance;
 
+    [SerializeField] private OrderUIManager orderUIManager;
+
     public List<OrderIngredient> currentOrderIngredients = new List<OrderIngredient>();
 
     public event Action OnOrderCompleted; // Событие завершения заказа
@@ -68,11 +70,11 @@ public class OrderManager : MonoBehaviour
 
     private void UpdateOrderUI(DishType dishType, List<OrderIngredient> ingredients)
     {
-        OrderUIManager.Instance.ShowOrder(dishType, ingredients);
+        orderUIManager.ShowOrder(dishType, ingredients);
     }
 
     private void UpdateIngredientListUI()
     {
-        OrderUIManager.Instance.UpdateIngredients(currentOrderIngredients);
+        orderUIManager.UpdateIngredients(currentOrderIngredients);
     }
 }

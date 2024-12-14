@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Mixer : MonoBehaviour
+public class Mixer : MonoBehaviour, IInteractable
 {
+    [SerializeField] PlayerInteraction player;
     [SerializeField] Oven oven;
 
     public bool isReadyToMix = false;
@@ -71,5 +72,15 @@ public class Mixer : MonoBehaviour
     {
         IsMixed = false;
         Debug.Log("Миксер очищен.");
+    }
+
+    public void Interact(PlayerInteraction player)
+    {
+        player.AddToMixer(this);
+    }
+
+    public string GetInteractionHint()
+    {
+        return "Добавляй или миксуй";
     }
 }
