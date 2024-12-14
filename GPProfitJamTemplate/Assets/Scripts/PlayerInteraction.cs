@@ -160,7 +160,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    void TakeBakedDish(Oven oven)
+    public void TakeBakedDish(Oven oven)
     {
         if (!hasBakedDish)
         {

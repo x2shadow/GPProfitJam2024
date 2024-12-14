@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Oven : MonoBehaviour
+public class Oven : MonoBehaviour, IInteractable
 {
     public bool hasMixedProduct = false; // Проверяет, есть ли продукт для запекания
     public bool hasBakedDish = false; // Готовое блюдо в печи
@@ -95,5 +95,30 @@ public class Oven : MonoBehaviour
         {
             audioSource.PlayOneShot(ovenBakedSound);
         }
+    }
+
+    public void Interact(PlayerInteraction player)
+    {
+        if (hasMixedProduct)
+        {
+            StartBaking();
+        }
+        else if (hasBakedDish)
+        {
+            player.TakeBakedDish(this);
+        }
+        else if (isBaking)
+        {
+            Debug.Log("Продукт всё ещё запекается.");
+        }
+        else
+        {
+            Debug.Log("В печи ничего нет.");
+        }
+    }
+
+    public string GetInteractionHint()
+    {
+        return "Добавить или забрать из печки";
     }
 }
