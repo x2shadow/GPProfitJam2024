@@ -3,52 +3,54 @@ using UnityEngine.UI;
 
 public class Oven : MonoBehaviour, IInteractable
 {
-    public bool hasMixedProduct = false; // Проверяет, есть ли продукт для запекания
-    public bool hasBakedDish = false; // Готовое блюдо в печи
-    public bool isBaking = false;        // Проверяет, идет ли процесс запекания
+    private IOvenState currentState;
+
+    public bool hasMixedProduct = false;  // Продукт для запекания
+    public bool hasBakedDish = false;     // Готовое блюдо
+    public bool isBaking = false;         // Процесс запекания
     public float bakingTime = 5f;         // Время запекания
-    private float bakingTimer = 0f;
+    public float bakingTimer = 0f;        // Таймер для запекания
 
-    [SerializeField] Slider ovenSlider;
-
-    [Header("AUDIO")]
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip ovenBakingSound;
-    [SerializeField] AudioClip ovenBakedSound;
-    [SerializeField] AudioClip ovenFilledSound;
+    [SerializeField] public Slider ovenSlider;
 
     void Start()
     {
         ovenSlider.gameObject.SetActive(false);
         ovenSlider.maxValue = bakingTime;
+        ChangeState(new EmptyState());  // Начальное состояние печи — пустое
     }
 
     void Update()
     {
-        if (isBaking)
-        {
-            bakingTimer += Time.deltaTime;
-            ovenSlider.value = bakingTimer;
+        currentState.Handle(this);
+    }
+    
+    public void Baking()
+    {
+        bakingTimer += Time.deltaTime; 
+        ovenSlider.value = bakingTimer;
 
-            if (bakingTimer >= bakingTime)
-            {
-                FinishBaking();
-            }
+        // Проверка на завершение запекания
+        if (bakingTimer >= bakingTime)
+        {
+            isBaking = false;
         }
     }
 
+    // Метод для смены состояния
+    public void ChangeState(IOvenState newState)
+    {
+        currentState = newState;  // Устанавливаем новое состояние
+        currentState.Handle(this);  // Обрабатываем новое состояние
+    }
+
+    // Метод для добавления продукта в печь
     public void AddMixedProduct()
     {
-        if (!hasMixedProduct)
+        if (!hasMixedProduct)  // Если продукт еще не был добавлен
         {
-            Debug.Log("Смешанный продукт добавлен в печь.");
-            hasMixedProduct = true;
-
-            // Проигрывание звука
-            if (audioSource != null && ovenFilledSound != null)
-            {
-                audioSource.PlayOneShot(ovenFilledSound);
-            }
+            Debug.Log("Продукт добавлен в печь.");
+            hasMixedProduct = true;  // Продукт добавлен в печь
         }
         else
         {
@@ -56,64 +58,20 @@ public class Oven : MonoBehaviour, IInteractable
         }
     }
 
-    public void StartBaking()
-    {
-        if (hasMixedProduct && !isBaking)
-        {
-            Debug.Log("Процесс запекания начался.");
-            isBaking = true;
-            ovenSlider.gameObject.SetActive(true);
-
-            // Проигрывание звука
-            if (audioSource != null && ovenBakingSound != null)
-            {
-                audioSource.PlayOneShot(ovenBakingSound);
-            }
-        }
-        else if (!hasMixedProduct)
-        {
-            Debug.LogWarning("В печь ничего не положено для запекания.");
-        }
-        else
-        {
-            Debug.LogWarning("Запекание уже идет!");
-        }
-    }
-
-    private void FinishBaking()
-    {
-        Debug.Log("Запекание завершено! Продукт готов.");
-        hasMixedProduct = false;
-        isBaking = false;
-        bakingTimer = 0f;
-        ovenSlider.gameObject.SetActive(false);
-
-        hasBakedDish = true; // Блюдо готово
-
-        // Проигрывание звука
-        if (audioSource != null && ovenBakedSound != null)
-        {
-            audioSource.PlayOneShot(ovenBakedSound);
-        }
-    }
-
+    // Интеракция с печью
     public void Interact(PlayerInteraction player)
     {
-        if (hasMixedProduct)
+        if (!hasMixedProduct && !isBaking)  // Печь пуста и не идет процесс запекания
         {
-            StartBaking();
+            AddMixedProduct();  // Добавляем продукт в печь
         }
-        else if (hasBakedDish)
+        else if (hasBakedDish)  // Если блюдо готово, забираем его
         {
             player.TakeBakedDish(this);
         }
-        else if (isBaking)
-        {
-            Debug.Log("Продукт всё ещё запекается.");
-        }
         else
         {
-            Debug.Log("В печи ничего нет.");
+            Debug.Log("Печь уже в процессе запекания.");
         }
     }
 

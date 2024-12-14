@@ -8,8 +8,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public bool isPaused;
-
     void Awake()
     {
         if(Instance != null && Instance != this)
@@ -24,7 +22,5 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("Level 1");
-        if(Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("Level 2");
     }
 }

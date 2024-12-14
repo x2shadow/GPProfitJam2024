@@ -30,9 +30,6 @@ public class Mixer : MonoBehaviour, IInteractable
         Debug.Log("Ингредиенты смешаны. Блюдо готово!");
         IsMixed = true;
         isReadyToMix = false;
-
-        // Событие готовности к запеканию
-        oven.hasMixedProduct = true;
     }
 
     public void AddIngredientToMixer(Ingredient ingredient)
