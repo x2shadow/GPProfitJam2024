@@ -35,7 +35,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        if (nearbyInteractable != null && Input.GetKeyDown("Interact"))
+        if (nearbyInteractable != null && Input.GetButtonDown("Interact"))
         {
             nearbyInteractable.Interact(this);
         }
@@ -76,7 +76,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    void TakeOrder(Client client)
+    public void TakeOrder(Client client)
     {
         // Проверка, является ли клиент первым в очереди
         if (clientSystem.queue.Peek() == client.gameObject)
@@ -96,7 +96,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    void GiveDishToClient(Client client)
+    public void GiveDishToClient(Client client)
     {
         // Проверка, является ли клиент на точке ожидания
         if (clientSystem.waitingClient == client.gameObject)
