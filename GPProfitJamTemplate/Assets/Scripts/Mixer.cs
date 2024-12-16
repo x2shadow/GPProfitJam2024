@@ -29,6 +29,7 @@ public class Mixer : MonoBehaviour, IInteractable
 
         Debug.Log("Ингредиенты смешаны. Блюдо готово!");
         IsMixed = true;
+        player.hasMixedProduct = true;
         isReadyToMix = false;
     }
 

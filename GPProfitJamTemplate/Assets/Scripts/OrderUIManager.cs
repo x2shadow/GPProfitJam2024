@@ -1,10 +1,18 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OrderUIManager : MonoBehaviour
 {
     public static OrderUIManager Instance;
+
+    [Header("New UI")]
+    public GameObject newOrderUI;
+    //public TextMeshProUGUI ingredientsUI;
+    public Slider timeSlider; // Слайдер для отсчета времени
+    public float timeLimit = 20f; // Таймер на 20 секунд
+    private float currentTime; // Текущее оставшееся время
 
     [Header("UI")]
     public GameObject orderUI;
@@ -23,8 +31,35 @@ public class OrderUIManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        currentTime = timeLimit;
+        timeSlider.maxValue = timeLimit;
+        timeSlider.value = currentTime;
+    }
+
+        void Update()
+    {
+        // Обновление таймера и слайдера
+        if (currentTime > 0)
+        {
+            currentTime -= Time.deltaTime; 
+            timeSlider.value = currentTime; 
+        }
+        else
+        {
+            OrderFailed();
+        }
+    }
+
+    void OrderFailed()
+    {
+        Debug.Log("Время истекло! Заказ не выполнен.");
+    }
+
     public void ShowOrder(DishType dishType, List<OrderIngredient> ingredients)
     {
+        newOrderUI.SetActive(true);
         orderUI.SetActive(true);
         dishName.text = TranslateDishType(dishType);
         UpdateIngredients(ingredients);
@@ -46,6 +81,7 @@ public class OrderUIManager : MonoBehaviour
 
     public void CloseOrderUI()
     {
+        newOrderUI.SetActive(false);
         orderUI.SetActive(false);
     }
 

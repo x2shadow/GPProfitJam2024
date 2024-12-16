@@ -6,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour
     private Ingredient currentIngredient = Ingredient.None;
     private IInteractable nearbyInteractable;
 
+    public bool hasMixedProduct = false; // Смешанный продукт в руках
     public bool hasBakedDish = false; // Готовое блюдо в руках
     public bool hasOrder = false;
     
@@ -13,10 +14,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [Header("AUDIO")]
     [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip takeOrderSound;
-    [SerializeField] AudioClip giveOrderSound; // Звук отдачи заказа
     [SerializeField] AudioClip pickIngredientSound; // Звук подбора ингредиента
-    [SerializeField] AudioClip pickFromOvenSound; // Звук сбора из печи
 
 
     [Header("UI")]
@@ -141,7 +139,6 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-
     public void AddToMixer(Mixer mixer)
     {
         if (!mixer.isReadyToMix && currentIngredient != Ingredient.None) // Добавить в миксер
@@ -159,25 +156,4 @@ public class PlayerInteraction : MonoBehaviour
             Debug.Log("У вас ничего нет.");
         }
     }
-
-    public void TakeBakedDish(Oven oven)
-    {
-        if (!hasBakedDish)
-        {
-            hasBakedDish = true;
-            oven.hasBakedDish = false;
-            Debug.Log("Вы забрали готовое блюдо из печи.");
-
-            // Проигрывание звука
-            if (audioSource != null && pickFromOvenSound != null)
-            {
-                audioSource.PlayOneShot(pickFromOvenSound);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Вы уже держите готовое блюдо!");
-        }
-    }
-
 }
