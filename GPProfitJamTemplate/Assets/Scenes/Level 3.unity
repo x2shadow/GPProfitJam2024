@@ -8081,7 +8081,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newOrderUI: {fileID: 1386258}
   timeSlider: {fileID: 1082951010}
-  timeLimit: 10
+  timeLimit: 500
   orderUI: {fileID: 1351171173}
   dishName: {fileID: 395085112}
   ingredientsUI: {fileID: 2030791059}
@@ -8794,7 +8794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02690ac397c583a4c8229e13f8644c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientsNumber: 1
+  clientsNumber: 2
   clientsDone: 0
   spawnrate: 0.5
   levelManager: {fileID: 1973573419}

@@ -9,6 +9,9 @@ public class OrderManager : MonoBehaviour
 
     [SerializeField] private OrderUIManager orderUIManager;
 
+    // Список активных заказов
+    public Queue<Client> orderQueue = new Queue<Client>(); 
+
     public List<OrderIngredient> currentOrderIngredients = new List<OrderIngredient>();
 
     public event Action OnOrderCompleted; // Событие завершения заказа

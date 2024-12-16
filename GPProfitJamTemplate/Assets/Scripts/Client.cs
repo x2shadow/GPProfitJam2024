@@ -8,7 +8,7 @@ public class Client : MonoBehaviour, IInteractable
 
     public void Interact(PlayerInteraction player)
     {
-        if(player.hasOrder == false)
+        if(!player.hasBakedDish)
         {
             player.TakeOrder(this);
         }

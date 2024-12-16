@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,7 +29,6 @@ public class PlayerInteraction : MonoBehaviour
         isMobilePlatform = Application.isMobilePlatform;
         interactionButton.SetActive(false);
         interactButtonMobile.gameObject.SetActive(false);
-        //interactButtonMobile.onClick.AddListener(OnInteractButtonPressed);
     }
 
     void Update()
@@ -81,12 +81,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("Взят заказ клиента.");
             hasOrder = true;
-            clientSystem.OrderTaken();
+            OrderManager.Instance.orderQueue.Enqueue(client); // Добавляем заказ в очередь
             OrderManager.Instance.InitializeOrder(client.dishType);
+            clientSystem.OrderTaken();
 
             // Проигрывание звука
             SoundManager.Instance.PlaySound("OrderTaken");
-
         }
         else
         {
