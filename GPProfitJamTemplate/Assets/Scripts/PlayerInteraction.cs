@@ -9,7 +9,6 @@ public class PlayerInteraction : MonoBehaviour
 
     public bool hasMixedProduct = false; // Смешанный продукт в руках
     public bool hasBakedDish = false; // Готовое блюдо в руках
-    public bool hasOrder = false;
     
     [SerializeField] ClientSpawnSystem clientSystem;
 
@@ -80,9 +79,7 @@ public class PlayerInteraction : MonoBehaviour
         if (clientSystem.queue.Peek() == client.gameObject)
         {
             Debug.Log("Взят заказ клиента.");
-            hasOrder = true;
-            OrderManager.Instance.orderQueue.Enqueue(client); // Добавляем заказ в очередь
-            OrderManager.Instance.InitializeOrder(client.dishType);
+            OrderManager.Instance.AddNewOrder(client);
             clientSystem.OrderTaken();
 
             // Проигрывание звука
@@ -101,7 +98,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("Вы отдали блюдо клиенту.");
             hasBakedDish = false;
-            hasOrder = false;
             clientSystem.OrderGiven();
             OrderUIManager.Instance.CloseOrderUI();
 

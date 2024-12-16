@@ -28,19 +28,22 @@ public class OrderManager : MonoBehaviour
         }
     }
 
-    public void InitializeOrder(DishType dishType)
+    public void AddNewOrder(Client client)
     {
-        Debug.Log("Инициализация заказа: " + dishType);
+        Debug.Log("Инициализация заказа: " + client.dishType);
+        orderQueue.Enqueue(client); // Добавляем заказ в очередь
+        orderUIManager.AddNewOrderUI(client);
+    }
 
-        Ingredient[] ingredients = Dish.GetIngredients(dishType);
-        currentOrderIngredients.Clear();
-
-        foreach (var ingredient in ingredients)
+    public void CompleteOrder()
+    {
+        // Логика завершения заказа (если заказ завершен, нужно удалить его из очереди и обновить UI)
+        if (orderQueue.Count > 0)
         {
-            currentOrderIngredients.Add(new OrderIngredient { ingredient = ingredient, isAdded = false });
+            Client completedClient = orderQueue.Dequeue(); // Убираем завершенный заказ из очереди
+            orderUIManager.RemoveOrderUI(completedClient); // Убираем UI для завершенного заказа
+            Destroy(completedClient.gameObject);
         }
-
-        UpdateOrderUI(dishType, currentOrderIngredients);
     }
 
     public bool IsOrderComplete()
