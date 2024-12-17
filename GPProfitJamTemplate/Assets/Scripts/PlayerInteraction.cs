@@ -9,18 +9,16 @@ public class PlayerInteraction : MonoBehaviour
 
     public bool hasMixedProduct = false; // Смешанный продукт в руках
     public bool hasBakedDish = false; // Готовое блюдо в руках
+    public bool hasTray = false;    // Поднос в руках
     
     [SerializeField] ClientSpawnSystem clientSystem;
 
     [Header("Tray System")]
-    [SerializeField] private GameObject tray; // Поднос персонажа
-    [SerializeField] private Transform playerTrayPosition;
+    [SerializeField] public GameObject tray; // Поднос персонажа
+    [SerializeField] public Transform playerTrayPosition;
     [SerializeField] private Transform[] traySlots = new Transform[3]; // Три слота на подносе
     private GameObject[] slotContents = new GameObject[3]; // Хранение объектов ингредиентов на подносе
     
-    private bool trayIsOnTable = false;
-
-
     [Header("AUDIO")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip pickIngredientSound; // Звук подбора ингредиента
@@ -83,30 +81,6 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    public void HandleTrayInteraction(Transform tablePosition)
-    {
-        if (!trayIsOnTable)
-        {
-            // Кладем поднос на стол
-            //tableTrayPosition = tablePosition;
-            tray.transform.SetParent(tablePosition);
-            tray.transform.localPosition = Vector3.zero;
-            tray.transform.localRotation = Quaternion.identity;
-            trayIsOnTable = true;
-
-            Debug.Log("Поднос положен на стол.");
-        }
-        else
-        {
-            // Забираем поднос со стола
-            tray.transform.SetParent(playerTrayPosition);
-            tray.transform.localPosition = Vector3.zero;
-            tray.transform.localRotation = Quaternion.identity;
-            trayIsOnTable = false;
-
-            Debug.Log("Поднос забран обратно.");
-        }
-    }
 
     public void TakeOrder(Client client)
     {
