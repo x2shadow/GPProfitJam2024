@@ -127,6 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeSlider: {fileID: 5330943874829368577}
   dishNameText: {fileID: 0}
+  orderTime: 600
 --- !u!1 &4942688489041441046
 GameObject:
   m_ObjectHideFlags: 0

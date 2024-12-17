@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
         if (isWin)
         {
             winPanel.SetActive(true);
-            timerText.text = "Победа скибидоп ес ес";
+            timerText.text = "Победа";
             Debug.Log("Уровень завершён!");
 
             // Проигрывание звука
