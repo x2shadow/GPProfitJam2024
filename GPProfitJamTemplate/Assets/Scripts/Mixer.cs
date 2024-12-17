@@ -74,7 +74,20 @@ public class Mixer : MonoBehaviour, IInteractable
 
     public void Interact(PlayerInteraction player)
     {
-        player.AddToMixer(this);
+        if (!isReadyToMix && player.currentIngredient != Ingredient.None) // Добавить в миксер
+        {
+            AddIngredientToMixer(player.currentIngredient);
+            player.currentIngredient = Ingredient.None;
+        }
+        else if (isReadyToMix)
+        {
+            // Смешать
+            TryMix();
+        }
+        else
+        {
+            Debug.Log("У вас ничего нет.");
+        }
     }
 
     public string GetInteractionHint()

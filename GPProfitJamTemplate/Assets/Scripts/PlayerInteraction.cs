@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    private Ingredient currentIngredient = Ingredient.None;
+    public Ingredient currentIngredient = Ingredient.None;
     private IInteractable nearbyInteractable;
 
     public bool hasMixedProduct = false; // Смешанный продукт в руках
@@ -190,23 +190,5 @@ public class PlayerInteraction : MonoBehaviour
                 return false;
         }
         return true;
-    }
-
-    public void AddToMixer(Mixer mixer)
-    {
-        if (!mixer.isReadyToMix && currentIngredient != Ingredient.None) // Добавить в миксер
-        {
-            mixer.AddIngredientToMixer(currentIngredient);
-            currentIngredient = Ingredient.None;
-        }
-        else if (mixer.isReadyToMix)
-        {
-            // Смешать
-            mixer.TryMix();
-        }
-        else
-        {
-            Debug.Log("У вас ничего нет.");
-        }
     }
 }
