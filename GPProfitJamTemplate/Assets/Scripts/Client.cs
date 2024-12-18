@@ -47,8 +47,9 @@ public class Client : MonoBehaviour, IInteractable
 
     void GiveDishToClient(PlayerInteraction player, Client client)
     {
-        // Проверка, является ли клиент на точке ожидания
-        if (player.clientSystem.waitingClient == client.gameObject)
+        // Проверка, является ли клиент на точке ожидания и его ли заказ у игрока
+        if (player.clientSystem.waitingClient == client.gameObject &&
+            player.currentDishType == client.dishType)
         {
             Debug.Log("Вы отдали блюдо клиенту.");
             player.hasBakedDish = false;
@@ -68,9 +69,10 @@ public class Client : MonoBehaviour, IInteractable
             SoundManager.Instance.PlaySound("OrderGiven");
  
         }
-        else
+        else if (player.currentDishType != client.dishType)
         {
-            Debug.LogWarning("Этот клиент не ожидает заказ.");
+            Debug.LogWarning("У вас другое блюдо в руках");
         }
+        else Debug.Log("Этот клиент не ожидает заказ.");
     }
 }

@@ -14,6 +14,7 @@ public class Oven : MonoBehaviour, IInteractable
     [HideInInspector] public Sprite  dishIcon;
 
     public GameObject dishPrefab;
+    public DishType dishInOven;
 
     public IOvenState EmptyState  { get; private set; }
     public IOvenState FilledState { get; private set; }

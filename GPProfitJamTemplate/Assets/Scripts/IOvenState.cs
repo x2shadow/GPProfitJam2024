@@ -22,6 +22,7 @@ public class EmptyState : IOvenState
             Debug.Log("Добавлен смешанный продукт в печь.");
             SoundManager.Instance.PlaySound("AddedToOven");
             player.hasMixedProduct = false;
+            oven.dishInOven = player.currentDishType;
             oven.dishIcon = Dish.GetDishIcon(player.currentDishType);
             oven.dishPrefab = Dish.GetDishPrefab(player.currentDishType);
             player.trayManager.UpdateTray(player, false);   // Убираем поднос
@@ -122,7 +123,7 @@ public class BakedState : IOvenState
             Debug.Log("Готовое блюдо забрано.");
             oven.productSlot.sprite = oven.noIcon;
             SoundManager.Instance.PlaySound("AddedToOven");
-            TakeBakedDish(player, DishType.Cookie, oven.dishPrefab);
+            TakeBakedDish(player, oven.dishInOven, oven.dishPrefab);
             oven.SetState(new EmptyState(oven)); // Возврат к пустому состоянию
         }
         else

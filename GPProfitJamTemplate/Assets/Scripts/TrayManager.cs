@@ -17,7 +17,6 @@ public class TrayManager : MonoBehaviour
     {
         List<Ingredient> takenIngredients = trayIngredients.GetRange(0, Mathf.Min(count, trayIngredients.Count));
         trayIngredients.RemoveRange(0, takenIngredients.Count);
-        //UpdateTraySlots();
         return takenIngredients;
     }
 
