@@ -9,6 +9,12 @@ public class Oven : MonoBehaviour, IInteractable
 
     public Slider ovenSlider;
 
+    public Image   productSlot;
+    public Sprite  noIcon; 
+    public Sprite  cookieIcon;
+
+    public GameObject productPrefab;
+
     public IOvenState EmptyState  { get; private set; }
     public IOvenState FilledState { get; private set; }
     public IOvenState BakingState { get; private set; }

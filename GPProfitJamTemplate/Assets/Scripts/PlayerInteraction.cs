@@ -111,8 +111,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("Вы отдали блюдо клиенту.");
             hasBakedDish = false;
+            currentDishType = DishType.None; // Убираем блюдо с подноса
+            hasTray = false;
+            tray.SetActive(false);
+            Destroy(productSlot.GetChild(0).gameObject);
             clientSystem.OrderGiven();
-            OrderUIManager.Instance.CloseOrderUI();
+            OrderManager.Instance.CompleteOrder();
+
 
             // Сброс nearbyInteractable и отключение кнопки
             nearbyInteractable = null;
@@ -207,5 +212,25 @@ public class PlayerInteraction : MonoBehaviour
         GameObject ingredientObject = Instantiate(productPrefab, productSlot);
         ingredientObject.transform.localPosition = Vector3.zero; // Обнуляем позицию в слоте
         Debug.Log($"Игрок забрал блюдо: {dishType}");
+    }
+
+    public void TakeBakedDish(DishType bakedDish, GameObject productPrefab)
+    {
+        currentDishType = bakedDish; // Добавляем готовое блюдо на поднос
+        hasTray = true;
+        tray.SetActive(true);
+        hasBakedDish = true;
+        GameObject productObject = Instantiate(productPrefab, productSlot);
+        productObject.transform.localPosition = Vector3.zero; // Обнуляем позицию в слоте
+        Debug.Log($"Готовое блюдо забрано на поднос: {bakedDish}");
+    }
+
+    public void PlaceDishInOven()
+    {
+        currentDishType = DishType.None; // Убираем блюдо с подноса
+        hasTray = false;
+        tray.SetActive(false);
+        Destroy(productSlot.GetChild(0).gameObject);
+        Debug.Log("Смешанное блюдо положено в печку.");
     }
 }

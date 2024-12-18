@@ -1,6 +1,10 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Mixer : MonoBehaviour, IInteractable
 {
@@ -11,9 +15,20 @@ public class Mixer : MonoBehaviour, IInteractable
     [SerializeField] private GameObject productPrefab;
 
 
-    [SerializeField] private float mixingTime = 5f; // Время на смешивание
-    private float mixingTimer = 0f;
+    [SerializeField] private float mixingTime = 2f; // Время на смешивание
     
+    [Header("UI")]
+    public Slider mixerSlider;
+    [SerializeField] private Image[] ingredientSlots; // Слоты для ингредиентов
+    [SerializeField] private Image   productSlot; // Слоты для ингредиентов
+    [SerializeField] private Sprite  plusIcon; // Иконка для пустого слота
+    [SerializeField] private Sprite  flourIcon; // Иконка муки
+    [SerializeField] private Sprite  chocolateIcon; // Иконка яйца
+    [SerializeField] private Sprite  milkIcon; // Иконка молока
+    [SerializeField] private Sprite  noIcon; // Иконка молока
+    [SerializeField] private Sprite  cookieIcon; // Иконка молока
+
+
     [Header("AUDIO")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip mixerSound;
@@ -53,13 +68,18 @@ public class Mixer : MonoBehaviour, IInteractable
 
                 Debug.Log($"Загружено {ingredientsToLoad} ингредиентов в миксер. Осталось слотов: {capacity - loadedIngredients.Count}");
 
+                
+
                 player.hasTray = false;
                 player.tray.SetActive(false);
+
+                UpdateIngredientSlots();
 
                 if (loadedIngredients.Count == capacity)
                 {
                     StartMixing();
                 }
+                else SoundManager.Instance.PlaySound("AddedToMixer");
             }
             else
             {
@@ -73,7 +93,10 @@ public class Mixer : MonoBehaviour, IInteractable
             {
                 player.TakeDish(mixedDishType, productPrefab);
                 mixedDishType = DishType.None;
+                ClearSlots();
+                productSlot.sprite = noIcon;
                 Debug.Log("Готовое блюдо забрано из миксера.");
+                SoundManager.Instance.PlaySound("AddedToMixer");
             }
             else
             {
@@ -83,33 +106,91 @@ public class Mixer : MonoBehaviour, IInteractable
         else Debug.Log("У вас ничего нет");
     }
 
+    private void UpdateIngredientSlots()
+    {
+        for (int i = 0; i < ingredientSlots.Length; i++)
+        {
+            if (i < loadedIngredients.Count)
+            {
+                ingredientSlots[i].sprite = GetIngredientIcon(loadedIngredients[i]);
+            }
+            else
+            {
+                ingredientSlots[i].sprite = plusIcon; // Пустой слот
+            }
+        }
+    }
+
+    private Sprite GetIngredientIcon(Ingredient ingredient)
+    {
+        switch (ingredient)
+        {
+            case Ingredient.Flour:
+                return flourIcon;
+            case Ingredient.Chocolate:
+                return chocolateIcon;
+            case Ingredient.Milk:
+                return milkIcon;
+            default:
+                return plusIcon;
+        }
+    }
+
+    private void ClearSlots()
+    {
+        foreach (var slot in ingredientSlots)
+        {
+            slot.sprite = plusIcon;
+        }
+    }
+
     private void StartMixing()
     {
         if (!isMixing && loadedIngredients.Count == capacity)
         {
             isMixing = true;
-            mixingTimer = mixingTime;
+            mixerSlider.gameObject.SetActive(true);
+            ingredientSlots[0].sprite = noIcon; 
+            ingredientSlots[1].sprite = noIcon; 
+            ingredientSlots[2].sprite = noIcon; 
+            StartCoroutine(MixingProcess());
+            SoundManager.Instance.PlaySound("MixingSound");
             Debug.Log("Начинаем смешивать ингредиенты...");
         }
     }
 
+    void Start()
+    {
+        mixerSlider.gameObject.SetActive(false);  // Скрыть слайдер при старте
+        mixerSlider.maxValue = mixingTime;
+    }
+
     private void Update()
     {
-        if (isMixing)
+
+    }
+
+    private IEnumerator MixingProcess()
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < mixingTime)
         {
-            mixingTimer -= Time.deltaTime;
-            if (mixingTimer <= 0f)
-            {
-                CompleteMixing();
-            }
+            elapsedTime += Time.deltaTime;
+            mixerSlider.value = elapsedTime;
+            yield return null; // Ждем до следующего кадра
         }
+
+        CompleteMixing();
     }
 
     private void CompleteMixing()
     {
         isMixing = false;
+        mixerSlider.gameObject.SetActive(false);
         mixedDishType = Dish.CreateDishFromIngredients(loadedIngredients); // Определяем тип блюда
         loadedIngredients.Clear(); // Очищаем миксер
+        productSlot.sprite = cookieIcon;
         Debug.Log($"Смешивание завершено. Готовое блюдо: {mixedDishType}.");
     }
 
