@@ -7,8 +7,6 @@ public class IngredientPack : MonoBehaviour, IInteractable
 
     public void Interact(PlayerInteraction player)
     {
-        //player.TakeIngredient(ingredientType, ingredientPrefab);   
-
         int freeSlotIndex = player.trayManager.GetFreeSlotIndex();
 
         if (player.currentIngredient == ingredientType)
@@ -17,12 +15,13 @@ public class IngredientPack : MonoBehaviour, IInteractable
         }
         else if (freeSlotIndex != -1)
         {
-            player.trayManager.tray.SetActive(true);
+            TrayManager trayManager = player.trayManager;
+            trayManager.TakeTray();
             player.hasTray = true;  // Есть поднос
 
-            GameObject ingredientObject = Instantiate(ingredientPrefab, player.trayManager.traySlots[freeSlotIndex]);
+            GameObject ingredientObject = Instantiate(ingredientPrefab, trayManager.traySlots[freeSlotIndex]);
             ingredientObject.transform.localPosition = Vector3.zero; // Обнуляем позицию в слоте
-            player.trayManager.trayIngredients.Add(ingredientType);
+            trayManager.trayIngredients.Add(ingredientType);
 
             Debug.Log($"Вы взяли {ingredientType} и положили его на поднос в слот {freeSlotIndex + 1}");
 
@@ -37,10 +36,5 @@ public class IngredientPack : MonoBehaviour, IInteractable
     public string GetInteractionHint()
     {
         return $"Взять {ingredientType}";
-    }
-
-    public void TakeIngredient(Ingredient ingredient, GameObject ingredientPrefab)
-    {
-
     }
 }

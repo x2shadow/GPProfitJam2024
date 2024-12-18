@@ -15,7 +15,6 @@ public class OrderUIManager : MonoBehaviour
 
     private List<OrderUI> activeOrderUIs = new List<OrderUI>(); // Список активных UI для заказов
 
-
     [Header("UI")]
     public GameObject orderUI;
     public TextMeshProUGUI dishName;

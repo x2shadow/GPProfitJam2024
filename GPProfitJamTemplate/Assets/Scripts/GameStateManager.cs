@@ -27,6 +27,11 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        Dish.LoadIcons();
+    }
+
     public void PauseGame()
     {
         isPaused = true;

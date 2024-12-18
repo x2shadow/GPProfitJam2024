@@ -56,13 +56,9 @@ public class TrayManager : MonoBehaviour
         }
     }
 
-    public int GetFreeSlotIndex()
-    {
-        int freeSlotIndex = trayIngredients.Count < 3 ? trayIngredients.Count : -1;
-        return freeSlotIndex; // Все слоты заняты
-    }
+    public int GetFreeSlotIndex() => trayIngredients.Count < 3 ? trayIngredients.Count : -1;
 
-        public void ClearTraySlot(int slotIndex)
+    public void ClearTraySlot(int slotIndex)
     {
         Destroy(traySlots[slotIndex].GetChild(0).gameObject);
     }
@@ -70,5 +66,15 @@ public class TrayManager : MonoBehaviour
     bool IsTrayEmpty()
     {
         return trayIngredients.Count == 0 ? true : false;
+    }
+
+    public void TakeTray()
+    {
+        tray.SetActive(true);
+    }
+
+    public void RemoveTray()
+    {
+        tray.SetActive(false);
     }
 }

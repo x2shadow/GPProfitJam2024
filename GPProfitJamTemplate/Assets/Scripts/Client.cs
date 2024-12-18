@@ -54,11 +54,10 @@ public class Client : MonoBehaviour, IInteractable
             player.hasBakedDish = false;
             player.currentDishType = DishType.None; // Убираем блюдо с подноса
             player.hasTray = false;
-            player.trayManager.tray.SetActive(false);
+            player.trayManager.RemoveTray();
             Destroy(player.trayManager.productSlot.GetChild(0).gameObject);
             player.clientSystem.OrderGiven();
             OrderManager.Instance.CompleteOrder();
-
 
             // Сброс nearbyInteractable и отключение кнопки
             player.nearbyInteractable = null;

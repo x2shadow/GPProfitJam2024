@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public enum Ingredient
@@ -37,6 +38,16 @@ public static class Dish
         { DishType.Cookie,         new Ingredient[] { Ingredient.Milk, Ingredient.Flour, Ingredient.Chocolate } },
         { DishType.ChocolateCake,  new Ingredient[] { Ingredient.Milk, Ingredient.Egg, Ingredient.Chocolate } }
     };
+
+    private static Dictionary<DishType, Sprite> dishIcons = new Dictionary<DishType, Sprite>();
+
+    public static void LoadIcons()
+    {
+        dishIcons[DishType.StrawberryCake] = Resources.Load<Sprite>("Icons/StrawberryCakeIcon");
+        dishIcons[DishType.Cupcake] = Resources.Load<Sprite>("Icons/CupcakeIcon");
+        dishIcons[DishType.Cookie] = Resources.Load<Sprite>("Icons/CookieIcon");
+        dishIcons[DishType.ChocolateCake] = Resources.Load<Sprite>("Icons/ChocolateCakeIcon");
+    }
 
     public static Ingredient[] GetIngredients(DishType dishType)
     {
@@ -86,5 +97,16 @@ public static class Dish
 
         // Если комбинация не соответствует ни одному блюду
         return DishType.None;
+    }
+
+    public static Sprite GetDishIcon(DishType dishType)
+    {
+        if (dishIcons.TryGetValue(dishType, out Sprite icon))
+        {
+            return icon;
+        }
+
+        Debug.LogWarning($"Иконка для блюда {dishType} не найдена.");
+        return null;
     }
 }

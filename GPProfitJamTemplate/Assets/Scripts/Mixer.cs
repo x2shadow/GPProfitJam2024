@@ -14,7 +14,6 @@ public class Mixer : MonoBehaviour, IInteractable
     private DishType mixedDishType; // Тип готового блюда
     [SerializeField] private GameObject productPrefab;
 
-
     [SerializeField] private float mixingTime = 2f; // Время на смешивание
     
     [Header("UI")]
@@ -23,25 +22,21 @@ public class Mixer : MonoBehaviour, IInteractable
     [SerializeField] private Image   productSlot; // Слоты для ингредиентов
     [SerializeField] private Sprite  plusIcon; // Иконка для пустого слота
     [SerializeField] private Sprite  flourIcon; // Иконка муки
-    [SerializeField] private Sprite  chocolateIcon; // Иконка яйца
+    [SerializeField] private Sprite  chocolateIcon; 
     [SerializeField] private Sprite  milkIcon; // Иконка молока
-    [SerializeField] private Sprite  noIcon; // Иконка молока
-    [SerializeField] private Sprite  cookieIcon; // Иконка молока
-
-
-    [Header("AUDIO")]
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip mixerSound;
-    [SerializeField] AudioClip mixerFilledSound;
+    [SerializeField] private Sprite  noIcon; 
+    [SerializeField] private Sprite  dishIcon; 
+    [SerializeField] private Sprite  cookieIcon; 
 
     public void Interact(PlayerInteraction player)
     {
         TrayManager tray = player.GetComponent<TrayManager>();
         if (tray != null && tray.HasIngredients())
         {
-            AddIngredientsFromTray(tray);
+            AddIngredientsToMixerFromTray(tray);
+
             player.hasTray = false;
-            player.trayManager.tray.SetActive(false);
+            player.trayManager.RemoveTray();
         }
         // Если игрок хочет забрать готовое блюдо
         else if (mixedDishType != DishType.None)
@@ -63,7 +58,7 @@ public class Mixer : MonoBehaviour, IInteractable
         }
     }
 
-    private void AddIngredientsFromTray(TrayManager tray)
+    private void AddIngredientsToMixerFromTray(TrayManager tray)
     {
         int availableSlots = capacity - loadedIngredients.Count;
         int ingredientsToLoad = Mathf.Min(tray.GetIngredientCount(), availableSlots);
@@ -180,8 +175,8 @@ public class Mixer : MonoBehaviour, IInteractable
         isMixing = false;
         mixerSlider.gameObject.SetActive(false);
         mixedDishType = Dish.CreateDishFromIngredients(loadedIngredients); // Определяем тип блюда
+        productSlot.sprite = Dish.GetDishIcon(mixedDishType);
         loadedIngredients.Clear(); // Очищаем миксер
-        productSlot.sprite = cookieIcon;
         Debug.Log($"Смешивание завершено. Готовое блюдо: {mixedDishType}.");
     }
 
