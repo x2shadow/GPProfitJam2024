@@ -205,32 +205,41 @@ public class PlayerInteraction : MonoBehaviour
 
     public void TakeDish(DishType dishType, GameObject productPrefab)
     {
-        currentDishType = dishType;
-        hasTray = true;
-        tray.SetActive(true);
-        hasMixedProduct = true;
-        GameObject ingredientObject = Instantiate(productPrefab, productSlot);
-        ingredientObject.transform.localPosition = Vector3.zero; // Обнуляем позицию в слоте
+        UpdateTray(true, dishType, productPrefab, false);
         Debug.Log($"Игрок забрал блюдо: {dishType}");
     }
 
     public void TakeBakedDish(DishType bakedDish, GameObject productPrefab)
     {
-        currentDishType = bakedDish; // Добавляем готовое блюдо на поднос
-        hasTray = true;
-        tray.SetActive(true);
-        hasBakedDish = true;
-        GameObject productObject = Instantiate(productPrefab, productSlot);
-        productObject.transform.localPosition = Vector3.zero; // Обнуляем позицию в слоте
+        UpdateTray(true, bakedDish, productPrefab, true);
         Debug.Log($"Готовое блюдо забрано на поднос: {bakedDish}");
     }
 
     public void PlaceDishInOven()
     {
-        currentDishType = DishType.None; // Убираем блюдо с подноса
-        hasTray = false;
-        tray.SetActive(false);
-        Destroy(productSlot.GetChild(0).gameObject);
+        UpdateTray(false);
         Debug.Log("Смешанное блюдо положено в печку.");
     }
+
+    private void UpdateTray(bool trayActive, DishType dishType = DishType.None, GameObject productPrefab = null, bool isBaked = false)
+    {
+        currentDishType = dishType;
+        hasTray = trayActive;
+        tray.SetActive(trayActive);
+
+        if (productPrefab != null && productSlot.childCount == 0)
+        {
+            GameObject productObject = Instantiate(productPrefab, productSlot);
+            productObject.transform.localPosition = Vector3.zero; // Обнуляем позицию
+            hasMixedProduct = !isBaked;
+            hasBakedDish = isBaked;
+        }
+        else if (productPrefab == null && productSlot.childCount > 0)
+        {
+            Destroy(productSlot.GetChild(0).gameObject);
+            hasMixedProduct = false;
+            hasBakedDish = false;
+        }
+    }
+
 }
