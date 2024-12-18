@@ -11,35 +11,22 @@ public class PlayerInteraction : MonoBehaviour
     public DishType currentDishType;
 
     public ClientSpawnSystem clientSystem;
+   
+    public TrayManager trayManager; // Менеджер подноса
 
     public bool hasMixedProduct = false; // Смешанный продукт в руках
     public bool hasBakedDish = false; // Готовое блюдо в руках
-    public bool hasTray = false;    // Поднос в руках
-    
-    [Header("Tray System")]
-    [SerializeField] public GameObject tray; // Поднос персонажа
-    [SerializeField] public Transform playerTrayPosition;
-    [SerializeField] private Transform[] traySlots = new Transform[3]; // Три слота на подносе
-    [SerializeField] public Transform productSlot;
-    public List<Ingredient> trayIngredients = new List<Ingredient>(); // Хранение объектов ингредиентов на подносе
-    
-    [Header("AUDIO")]
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip pickIngredientSound; // Звук подбора ингредиента
-
+    public bool hasTray = false;    // Поднос в руках 
 
     [Header("UI")]
     public GameObject interactionButton;  // Кнопка "Взять заказ"
     public Button     interactButtonMobile; // Ссылка на кнопку Interact
 
-    bool isMobilePlatform;
-
     void Start()
     {
-        isMobilePlatform = Application.isMobilePlatform;
         interactionButton.SetActive(false);
         interactButtonMobile.gameObject.SetActive(false);
-        tray.SetActive(false);
+        trayManager.tray.SetActive(false);
     }
 
     void Update()
@@ -47,18 +34,6 @@ public class PlayerInteraction : MonoBehaviour
         if (nearbyInteractable != null && Input.GetButtonDown("Interact"))
         {
             nearbyInteractable.Interact(this);
-        }
-    }
-
-    void SetInteractButton(bool status)
-    {
-        if (Application.isMobilePlatform)
-        {
-            interactButtonMobile.gameObject.SetActive(status);
-        }
-        else
-        {
-            interactionButton.SetActive(status);
         }
     }
 
@@ -83,113 +58,4 @@ public class PlayerInteraction : MonoBehaviour
             interactionButton.SetActive(false);
         }
     }
-
-    public void TakeIngredient(Ingredient ingredient, GameObject ingredientPrefab)
-    {
-        int freeSlotIndex = GetFreeSlotIndex();
-
-        if (currentIngredient == ingredient)
-        {
-            Debug.Log($"Вы уже держите {ingredient}.");
-        }
-        else if (freeSlotIndex != -1)
-        {
-            tray.SetActive(true);
-            hasTray = true;  // Есть поднос
-
-            GameObject ingredientObject = Instantiate(ingredientPrefab, traySlots[freeSlotIndex]);
-            ingredientObject.transform.localPosition = Vector3.zero; // Обнуляем позицию в слоте
-            trayIngredients.Add(ingredient);
-
-            Debug.Log($"Вы взяли {ingredient} и положили его на поднос в слот {freeSlotIndex + 1}");
-
-            currentIngredient = ingredient;
-            //Debug.Log($"Вы взяли {ingredient}.");
-
-            // Проигрывание звука
-            if (audioSource != null && pickIngredientSound != null)
-            {
-                audioSource.PlayOneShot(pickIngredientSound);
-            }
-        }
-        else Debug.Log("Поднос полон");
-    }
-
-    int GetFreeSlotIndex()
-    {
-        int freeSlotIndex = trayIngredients.Count < 3 ? trayIngredients.Count : -1;
-        return freeSlotIndex; // Все слоты заняты
-    }
-    
-    public void ClearTraySlot(int slotIndex)
-    {
-        Destroy(traySlots[slotIndex].GetChild(0).gameObject);
-    }
-
-    bool IsTrayEmpty()
-    {
-        return trayIngredients.Count == 0 ? true : false;
-    }
-
-    public bool HasIngredients()
-    {
-        return trayIngredients.Count > 0;
-    }
-
-    public int GetIngredientCount()
-    {
-        return trayIngredients.Count;
-    }
-
-    public List<Ingredient> TakeIngredients(int count)
-    {
-        List<Ingredient> takenIngredients = trayIngredients.GetRange(0, count);
-        //trayIngredients.RemoveRange(0, count);
-        return takenIngredients;
-    }
-
-    public bool CanTakeDish()
-    {
-        return currentDishType == DishType.None;
-    }
-
-    public void TakeDish(DishType dishType, GameObject productPrefab)
-    {
-        UpdateTray(true, dishType, productPrefab, false);
-        Debug.Log($"Игрок забрал блюдо: {dishType}");
-    }
-
-    public void TakeBakedDish(DishType bakedDish, GameObject productPrefab)
-    {
-        UpdateTray(true, bakedDish, productPrefab, true);
-        Debug.Log($"Готовое блюдо забрано на поднос: {bakedDish}");
-    }
-
-    public void PlaceDishInOven()
-    {
-        UpdateTray(false);
-        Debug.Log("Смешанное блюдо положено в печку.");
-    }
-
-    private void UpdateTray(bool trayActive, DishType dishType = DishType.None, GameObject productPrefab = null, bool isBaked = false)
-    {
-        currentDishType = dishType;
-        hasTray = trayActive;
-        tray.SetActive(trayActive);
-
-        if (productPrefab != null && productSlot.childCount == 0)
-        {
-            GameObject productObject = Instantiate(productPrefab, productSlot);
-            productObject.transform.localPosition = Vector3.zero; // Обнуляем позицию
-            hasMixedProduct = !isBaked;
-            hasBakedDish = isBaked;
-        }
-        else if (productPrefab == null && productSlot.childCount > 0)
-        {
-            Destroy(productSlot.GetChild(0).gameObject);
-            hasMixedProduct = false;
-            hasBakedDish = false;
-        }
-    }
-
 }

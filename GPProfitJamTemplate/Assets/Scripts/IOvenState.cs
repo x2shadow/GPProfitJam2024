@@ -22,8 +22,9 @@ public class EmptyState : IOvenState
             Debug.Log("Добавлен смешанный продукт в печь.");
             SoundManager.Instance.PlaySound("AddedToOven");
             player.hasMixedProduct = false;
-            player.PlaceDishInOven(); // Убираем блюдо с подноса
-            oven.SetState(new BakingState(oven)); // Эмулируем добавление продукта для теста
+            player.trayManager.UpdateTray(player, false);   // Убираем поднос
+            Debug.Log("Смешанное блюдо положено в печку.");
+            oven.SetState(new BakingState(oven));
         }
         else Debug.Log("Нечего добавлять в печь.");
     }
@@ -115,17 +116,23 @@ public class BakedState : IOvenState
 
     public void Interact(PlayerInteraction player)
     {
-        if (player.CanTakeDish())
+        if (player.currentDishType == DishType.None)
         {
             Debug.Log("Готовое блюдо забрано.");
             oven.productSlot.sprite = oven.noIcon;
             SoundManager.Instance.PlaySound("AddedToOven");
-            player.TakeBakedDish(DishType.Cookie, oven.productPrefab);
+            TakeBakedDish(player, DishType.Cookie, oven.productPrefab);
             oven.SetState(new EmptyState(oven)); // Возврат к пустому состоянию
         }
         else
         {
             Debug.LogWarning("Нет места на подносе для готового блюда.");
         }
+    }
+
+    public void TakeBakedDish(PlayerInteraction player, DishType bakedDish, GameObject productPrefab)
+    {
+        player.trayManager.UpdateTray(player, true, bakedDish, productPrefab, true);
+        Debug.Log($"Готовое блюдо забрано на поднос: {bakedDish}");
     }
 }

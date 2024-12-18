@@ -17,9 +17,9 @@ public class Table : MonoBehaviour, IInteractable
             if (player.hasTray)
             {
                 // Кладем поднос на стол
-                player.tray.transform.SetParent(trayPosition);
-                player.tray.transform.localPosition = Vector3.zero;
-                player.tray.transform.localRotation = Quaternion.identity;
+                player.trayManager.tray.transform.SetParent(trayPosition);
+                player.trayManager.tray.transform.localPosition = Vector3.zero;
+                player.trayManager.tray.transform.localRotation = Quaternion.identity;
                 isEmpty = false;
 
                 Debug.Log("Поднос положен на стол.");
@@ -31,9 +31,9 @@ public class Table : MonoBehaviour, IInteractable
         else
         {
             // Забираем поднос со стола
-            player.tray.transform.SetParent(player.playerTrayPosition);
-            player.tray.transform.localPosition = Vector3.zero;
-            player.tray.transform.localRotation = Quaternion.identity;
+            player.trayManager.tray.transform.SetParent(player.trayManager.playerTrayPosition);
+            player.trayManager.tray.transform.localPosition = Vector3.zero;
+            player.trayManager.tray.transform.localRotation = Quaternion.identity;
             isEmpty = true;
 
             Debug.Log("Поднос забран обратно.");

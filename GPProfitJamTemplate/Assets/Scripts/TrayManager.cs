@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class TrayManager : MonoBehaviour
 {
-    [SerializeField] private Transform[] traySlots;
-    private List<Ingredient> trayIngredients = new List<Ingredient>();
+    [SerializeField] public GameObject tray; // Поднос персонажа
+    [SerializeField] public Transform playerTrayPosition;
+    [SerializeField] public Transform[] traySlots = new Transform[3]; // Три слота на подносе
+    [SerializeField] public Transform productSlot;
+    public List<Ingredient> trayIngredients = new List<Ingredient>(); // Хранение объектов ингредиентов на подносе
 
     public bool HasIngredients() => trayIngredients.Count > 0;
 
@@ -14,7 +17,7 @@ public class TrayManager : MonoBehaviour
     {
         List<Ingredient> takenIngredients = trayIngredients.GetRange(0, Mathf.Min(count, trayIngredients.Count));
         trayIngredients.RemoveRange(0, takenIngredients.Count);
-        UpdateTraySlots();
+        //UpdateTraySlots();
         return takenIngredients;
     }
 
@@ -31,23 +34,41 @@ public class TrayManager : MonoBehaviour
             Debug.LogWarning("Поднос полон!");
         }
     }
-
-    private void UpdateTraySlots()
+    
+    public void UpdateTray(PlayerInteraction player, bool trayActive, DishType dishType = DishType.None, GameObject productPrefab = null, bool isBaked = false)
     {
-        for (int i = 0; i < traySlots.Length; i++)
+        player.currentDishType = dishType;
+        player.hasTray = trayActive;
+        tray.SetActive(trayActive);
+
+        if (productPrefab != null && productSlot.childCount == 0)
         {
-            if (i < trayIngredients.Count)
-            {
-                // Обновить слот (например, иконку)
-            }
-            else
-            {
-                // Очистить слот
-                if (traySlots[i].childCount > 0)
-                {
-                    Destroy(traySlots[i].GetChild(0).gameObject);
-                }
-            }
+            GameObject productObject = Instantiate(productPrefab, productSlot);
+            productObject.transform.localPosition = Vector3.zero; // Обнуляем позицию
+            player.hasMixedProduct = !isBaked;
+            player.hasBakedDish = isBaked;
         }
+        else if (productPrefab == null && productSlot.childCount > 0)
+        {
+            Destroy(productSlot.GetChild(0).gameObject);
+            player.hasMixedProduct = false;
+            player.hasBakedDish = false;
+        }
+    }
+
+    public int GetFreeSlotIndex()
+    {
+        int freeSlotIndex = trayIngredients.Count < 3 ? trayIngredients.Count : -1;
+        return freeSlotIndex; // Все слоты заняты
+    }
+
+        public void ClearTraySlot(int slotIndex)
+    {
+        Destroy(traySlots[slotIndex].GetChild(0).gameObject);
+    }
+
+    bool IsTrayEmpty()
+    {
+        return trayIngredients.Count == 0 ? true : false;
     }
 }

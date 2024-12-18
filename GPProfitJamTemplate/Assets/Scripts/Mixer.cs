@@ -41,6 +41,24 @@ public class Mixer : MonoBehaviour, IInteractable
         {
             AddIngredientsFromTray(tray);
         }
+        // Если игрок хочет забрать готовое блюдо
+        else if (mixedDishType != DishType.None)
+        {
+            if (player.currentDishType == DishType.None)
+            {
+                player.trayManager.UpdateTray(player, true, mixedDishType, productPrefab, false);
+                Debug.Log($"Игрок забрал блюдо: {mixedDishType}");
+                mixedDishType = DishType.None;
+                ClearSlots();
+                productSlot.sprite = noIcon;
+                Debug.Log("Готовое блюдо забрано из миксера.");
+                SoundManager.Instance.PlaySound("AddedToMixer");
+            }
+            else
+            {
+                Debug.LogWarning("У игрока нет места на подносе для готового блюда.");
+            }
+        }
     }
 
     private void AddIngredientsFromTray(TrayManager tray)

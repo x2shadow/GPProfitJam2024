@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 11691180}
   - component: {fileID: 11691182}
   - component: {fileID: 11691184}
+  - component: {fileID: 11691185}
   - component: {fileID: 11691183}
   m_Layer: 0
   m_Name: Player
@@ -463,10 +464,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentIngredient: 0
+  currentDishType: 0
+  clientSystem: {fileID: 1470461412}
+  trayManager: {fileID: 11691185}
   hasMixedProduct: 0
   hasBakedDish: 0
   hasTray: 0
-  clientSystem: {fileID: 1470461412}
+  interactionButton: {fileID: 1233774366}
+  interactButtonMobile: {fileID: 280200666}
+--- !u!114 &11691185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11691179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c957755bf71c49c4a8d56db0013514d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   tray: {fileID: 405136213}
   playerTrayPosition: {fileID: 467496472}
   traySlots:
@@ -475,10 +492,6 @@ MonoBehaviour:
   - {fileID: 268210178}
   productSlot: {fileID: 629284922}
   trayIngredients: 
-  audioSource: {fileID: 1552942917}
-  pickIngredientSound: {fileID: 8300000, guid: 4a64b5ad508a52448ad2d63e51252a8e, type: 3}
-  interactionButton: {fileID: 1233774366}
-  interactButtonMobile: {fileID: 280200666}
 --- !u!1 &22450147
 GameObject:
   m_ObjectHideFlags: 0
@@ -13783,6 +13796,9 @@ MonoBehaviour:
     volume: 1
   - name: MixingSound
     clip: {fileID: 8300000, guid: 20c1b0d2af3a87b45b0d644df17da3cb, type: 3}
+    volume: 1
+  - name: PickIngredientSound
+    clip: {fileID: 8300000, guid: 4a64b5ad508a52448ad2d63e51252a8e, type: 3}
     volume: 1
 --- !u!1 &1891388128
 GameObject:
