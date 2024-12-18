@@ -40,6 +40,8 @@ public class Mixer : MonoBehaviour, IInteractable
         if (tray != null && tray.HasIngredients())
         {
             AddIngredientsFromTray(tray);
+            player.hasTray = false;
+            player.trayManager.tray.SetActive(false);
         }
         // Если игрок хочет забрать готовое блюдо
         else if (mixedDishType != DishType.None)
@@ -69,16 +71,34 @@ public class Mixer : MonoBehaviour, IInteractable
         if (ingredientsToLoad > 0)
         {
             List<Ingredient> ingredients = tray.TakeIngredients(ingredientsToLoad);
+            List<Ingredient> ingredientsToRemove = new List<Ingredient>();  // Удалить ингредиенты из TrayManager
+
             foreach (var ingredient in ingredients)
             {
                 loadedIngredients.Add(ingredient);
+                ingredientsToRemove.Add(ingredient);
             }
+
+            // Удаляем ингредиенты из trayIngredients и очищаем соответствующие слоты
+            foreach (var ingredient in ingredientsToRemove)
+            {
+                int index = tray.trayIngredients.FindIndex(item => item == ingredient); // Используем лямбда-выражение
+                
+                if (index != -1)
+                {
+                    tray.trayIngredients.RemoveAt(index);
+                }
+            }
+
+            for (int i = 0; i < ingredientsToLoad; i++) tray.ClearTraySlot(i);
+            
             UpdateIngredientSlots();
 
             if (loadedIngredients.Count == capacity)
             {
                 StartMixing();
             }
+            else SoundManager.Instance.PlaySound("AddedToMixer");
         }
         else
         {
