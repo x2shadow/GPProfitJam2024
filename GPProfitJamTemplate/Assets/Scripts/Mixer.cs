@@ -36,104 +36,57 @@ public class Mixer : MonoBehaviour, IInteractable
 
     public void Interact(PlayerInteraction player)
     {
-        // Если игрок хочет загрузить ингредиенты
-        if (player.HasIngredients())
+        TrayManager tray = player.GetComponent<TrayManager>();
+        if (tray != null && tray.HasIngredients())
         {
-            int availableSlots = capacity - loadedIngredients.Count;
-            int ingredientsToLoad = Mathf.Min(player.GetIngredientCount(), availableSlots);
+            AddIngredientsFromTray(tray);
+        }
+    }
 
-            if (ingredientsToLoad > 0)
+    private void AddIngredientsFromTray(TrayManager tray)
+    {
+        int availableSlots = capacity - loadedIngredients.Count;
+        int ingredientsToLoad = Mathf.Min(tray.GetIngredientCount(), availableSlots);
+
+        if (ingredientsToLoad > 0)
+        {
+            List<Ingredient> ingredients = tray.TakeIngredients(ingredientsToLoad);
+            foreach (var ingredient in ingredients)
             {
-                List<Ingredient> ingredientsFromPlayer = player.TakeIngredients(ingredientsToLoad);
-                List<Ingredient> ingredientsToRemove = new List<Ingredient>();
-
-                foreach (var ingredient in ingredientsFromPlayer)
-                {
-                    loadedIngredients.Add(ingredient);
-                    ingredientsToRemove.Add(ingredient);
-                }
-
-                // Удаляем ингредиенты из trayIngredients и очищаем соответствующие слоты
-                foreach (var ingredient in ingredientsToRemove)
-                {
-                    int index = player.trayIngredients.FindIndex(item => item == ingredient); // Используем лямбда-выражение
-                    
-                    if (index != -1)
-                    {
-                        player.trayIngredients.RemoveAt(index);
-                    }
-                }
-
-                for (int i = 0; i < ingredientsToLoad; i++) player.ClearTraySlot(i);
-
-                Debug.Log($"Загружено {ingredientsToLoad} ингредиентов в миксер. Осталось слотов: {capacity - loadedIngredients.Count}");
-
-                
-
-                player.hasTray = false;
-                player.tray.SetActive(false);
-
-                UpdateIngredientSlots();
-
-                if (loadedIngredients.Count == capacity)
-                {
-                    StartMixing();
-                }
-                else SoundManager.Instance.PlaySound("AddedToMixer");
+                loadedIngredients.Add(ingredient);
             }
-            else
+            UpdateIngredientSlots();
+
+            if (loadedIngredients.Count == capacity)
             {
-                Debug.LogWarning("Недостаточно слотов в миксере для загрузки ингредиентов.");
+                StartMixing();
             }
         }
-        // Если игрок хочет забрать готовое блюдо
-        else if (mixedDishType != DishType.None)
+        else
         {
-            if (player.CanTakeDish())
-            {
-                player.TakeDish(mixedDishType, productPrefab);
-                mixedDishType = DishType.None;
-                ClearSlots();
-                productSlot.sprite = noIcon;
-                Debug.Log("Готовое блюдо забрано из миксера.");
-                SoundManager.Instance.PlaySound("AddedToMixer");
-            }
-            else
-            {
-                Debug.LogWarning("У игрока нет места на подносе для готового блюда.");
-            }
+            Debug.LogWarning("Недостаточно слотов в миксере.");
         }
-        else Debug.Log("У вас ничего нет");
     }
 
     private void UpdateIngredientSlots()
     {
         for (int i = 0; i < ingredientSlots.Length; i++)
         {
-            if (i < loadedIngredients.Count)
-            {
-                ingredientSlots[i].sprite = GetIngredientIcon(loadedIngredients[i]);
-            }
-            else
-            {
-                ingredientSlots[i].sprite = plusIcon; // Пустой слот
-            }
+            ingredientSlots[i].sprite = i < loadedIngredients.Count
+                ? GetIngredientIcon(loadedIngredients[i])
+                : plusIcon;
         }
     }
 
     private Sprite GetIngredientIcon(Ingredient ingredient)
     {
-        switch (ingredient)
+        return ingredient switch
         {
-            case Ingredient.Flour:
-                return flourIcon;
-            case Ingredient.Chocolate:
-                return chocolateIcon;
-            case Ingredient.Milk:
-                return milkIcon;
-            default:
-                return plusIcon;
-        }
+            Ingredient.Flour => flourIcon,
+            Ingredient.Chocolate => chocolateIcon,
+            Ingredient.Milk => milkIcon,
+            _ => plusIcon,
+        };
     }
 
     private void ClearSlots()

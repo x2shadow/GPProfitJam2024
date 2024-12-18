@@ -6,21 +6,21 @@ using UnityEngine.UI;
 public class PlayerInteraction : MonoBehaviour
 {
     public Ingredient currentIngredient = Ingredient.None;
-    private IInteractable nearbyInteractable;
+    public IInteractable nearbyInteractable;
 
-    DishType currentDishType;
+    public DishType currentDishType;
+
+    public ClientSpawnSystem clientSystem;
 
     public bool hasMixedProduct = false; // Смешанный продукт в руках
     public bool hasBakedDish = false; // Готовое блюдо в руках
     public bool hasTray = false;    // Поднос в руках
     
-    [SerializeField] ClientSpawnSystem clientSystem;
-
     [Header("Tray System")]
     [SerializeField] public GameObject tray; // Поднос персонажа
     [SerializeField] public Transform playerTrayPosition;
     [SerializeField] private Transform[] traySlots = new Transform[3]; // Три слота на подносе
-    [SerializeField] private Transform productSlot;
+    [SerializeField] public Transform productSlot;
     public List<Ingredient> trayIngredients = new List<Ingredient>(); // Хранение объектов ингредиентов на подносе
     
     [Header("AUDIO")]
@@ -75,62 +75,12 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-
     void OnTriggerExit(Collider other)
     {
         if (other.GetComponent<IInteractable>() == nearbyInteractable)
         {
             nearbyInteractable = null;
             interactionButton.SetActive(false);
-        }
-    }
-
-
-    public void TakeOrder(Client client)
-    {
-        // Проверка, является ли клиент первым в очереди
-        if (clientSystem.queue.Peek() == client.gameObject)
-        {
-            Debug.Log("Взят заказ клиента.");
-            OrderManager.Instance.AddNewOrder(client);
-            clientSystem.OrderTaken();
-
-            // Проигрывание звука
-            SoundManager.Instance.PlaySound("OrderTaken");
-        }
-        else
-        {
-            Debug.LogWarning("Вы можете взять заказ только у первого клиента в очереди.");
-        }
-    }
-
-    public void GiveDishToClient(Client client)
-    {
-        // Проверка, является ли клиент на точке ожидания
-        if (clientSystem.waitingClient == client.gameObject)
-        {
-            Debug.Log("Вы отдали блюдо клиенту.");
-            hasBakedDish = false;
-            currentDishType = DishType.None; // Убираем блюдо с подноса
-            hasTray = false;
-            tray.SetActive(false);
-            Destroy(productSlot.GetChild(0).gameObject);
-            clientSystem.OrderGiven();
-            OrderManager.Instance.CompleteOrder();
-
-
-            // Сброс nearbyInteractable и отключение кнопки
-            nearbyInteractable = null;
-            interactionButton.SetActive(false);
-            interactButtonMobile.gameObject.SetActive(false);
-
-            // Проигрывание звука
-            SoundManager.Instance.PlaySound("OrderGiven");
- 
-        }
-        else
-        {
-            Debug.LogWarning("Этот клиент не ожидает заказ.");
         }
     }
 
