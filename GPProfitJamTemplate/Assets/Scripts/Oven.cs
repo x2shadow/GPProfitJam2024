@@ -11,7 +11,7 @@ public class Oven : MonoBehaviour, IInteractable
 
     public Image   productSlot;
     public Sprite  noIcon; 
-    public Sprite  cookieIcon;
+    public Sprite  dishIcon;
 
     public GameObject productPrefab;
 
