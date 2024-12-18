@@ -29,6 +29,30 @@ public enum DishType
     ChocolateCake
 }
 
+public static class IngredientIconManager
+{
+    private static Dictionary<Ingredient, Sprite> ingredientIcons = new Dictionary<Ingredient, Sprite>();
+
+    public static void LoadIngredientIcons()
+    {
+        ingredientIcons[Ingredient.Milk] = Resources.Load<Sprite>("Icons/MilkIcon");
+        ingredientIcons[Ingredient.Flour] = Resources.Load<Sprite>("Icons/FlourIcon");
+        ingredientIcons[Ingredient.Egg] = Resources.Load<Sprite>("Icons/EggIcon");
+        ingredientIcons[Ingredient.Chocolate] = Resources.Load<Sprite>("Icons/ChocolateIcon");
+    }
+
+    public static Sprite GetIngredientIcon(Ingredient ingredient)
+    {
+        if (ingredientIcons.TryGetValue(ingredient, out Sprite icon))
+        {
+            return icon;
+        }
+
+        Debug.LogWarning($"Иконка для ингредиента {ingredient} не найдена.");
+        return null;
+    }
+}
+
 public static class Dish
 {
     private static Dictionary<DishType, Ingredient[]> dishes = new Dictionary<DishType, Ingredient[]>
@@ -38,6 +62,16 @@ public static class Dish
         { DishType.Cookie,         new Ingredient[] { Ingredient.Milk, Ingredient.Flour, Ingredient.Chocolate } },
         { DishType.ChocolateCake,  new Ingredient[] { Ingredient.Milk, Ingredient.Egg, Ingredient.Chocolate } }
     };
+
+    private static Dictionary<DishType, Sprite> dishPictures = new Dictionary<DishType, Sprite>();
+
+    public static void LoadPictures()
+    {
+        dishPictures[DishType.StrawberryCake] = Resources.Load<Sprite>("StrawberryCake");
+        dishPictures[DishType.Cupcake] = Resources.Load<Sprite>("Cupcake");
+        dishPictures[DishType.Cookie] = Resources.Load<Sprite>("Cookie");
+        dishPictures[DishType.ChocolateCake] = Resources.Load<Sprite>("ChocolateCake");
+    }
 
     private static Dictionary<DishType, Sprite> dishIcons = new Dictionary<DishType, Sprite>();
 
@@ -61,8 +95,10 @@ public static class Dish
 
     public static void LoadResources()
     {
+        LoadPictures();
         LoadIcons();
         LoadPrefabs();
+        IngredientIconManager.LoadIngredientIcons();
     }
 
     public static Ingredient[] GetIngredients(DishType dishType)
@@ -133,7 +169,18 @@ public static class Dish
             return dishPrefab;
         }
 
-        Debug.LogWarning($"Префаб для блюда {dishType} не найдена.");
+        Debug.LogWarning($"Префаб для блюда {dishType} не найден.");
+        return null;
+    }
+
+    public static Sprite GetDishPicture(DishType dishType)
+    {
+        if (dishPictures.TryGetValue(dishType, out Sprite dishPicture))
+        {
+            return dishPicture;
+        }
+
+        Debug.LogWarning($"Картинка для блюда {dishType} не найдена.");
         return null;
     }
 }
