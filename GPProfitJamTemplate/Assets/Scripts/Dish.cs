@@ -49,4 +49,42 @@ public static class Dish
             throw new KeyNotFoundException($"Блюдо {dishType} не найдено в книге рецептов");
         }
     }
+
+    public static DishType CreateDishFromIngredients(List<Ingredient> ingredients)
+    {
+        // Убедимся, что ингредиенты отсортированы для корректного сопоставления
+        ingredients.Sort();
+
+        // Пример сопоставления комбинаций ингредиентов с блюдами
+        if (ingredients.Count == 3)
+        {
+            if (ingredients[0] == Ingredient.Milk &&
+                ingredients[1] == Ingredient.Flour &&
+                ingredients[2] == Ingredient.Egg)
+            {
+                return DishType.StrawberryCake;
+            }
+            if (ingredients[0] == Ingredient.Chocolate &&
+                ingredients[1] == Ingredient.Flour &&
+                ingredients[2] == Ingredient.Egg)
+            {
+                return DishType.Cupcake;
+            }
+            if (ingredients[0] == Ingredient.Milk &&
+                ingredients[1] == Ingredient.Flour &&
+                ingredients[2] == Ingredient.Chocolate)
+            {
+                return DishType.Cookie;
+            }
+            if (ingredients[0] == Ingredient.Milk &&
+                ingredients[1] == Ingredient.Egg &&
+                ingredients[2] == Ingredient.Chocolate)
+            {
+                return DishType.ChocolateCake;
+            }
+        }
+
+        // Если комбинация не соответствует ни одному блюду
+        return DishType.None;
+    }
 }

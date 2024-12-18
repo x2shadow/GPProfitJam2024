@@ -8,7 +8,6 @@ public class IngredientPack : MonoBehaviour, IInteractable
     public void Interact(PlayerInteraction player)
     {
         player.TakeIngredient(ingredientType, ingredientPrefab);   
-        player.hasTray = true;  // Есть поднос
     }
 
     public string GetInteractionHint()

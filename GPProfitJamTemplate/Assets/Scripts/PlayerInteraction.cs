@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,8 @@ public class PlayerInteraction : MonoBehaviour
 {
     public Ingredient currentIngredient = Ingredient.None;
     private IInteractable nearbyInteractable;
+
+    DishType currentDishType;
 
     public bool hasMixedProduct = false; // Смешанный продукт в руках
     public bool hasBakedDish = false; // Готовое блюдо в руках
@@ -17,7 +20,8 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] public GameObject tray; // Поднос персонажа
     [SerializeField] public Transform playerTrayPosition;
     [SerializeField] private Transform[] traySlots = new Transform[3]; // Три слота на подносе
-    public GameObject[] slotContents = new GameObject[3]; // Хранение объектов ингредиентов на подносе
+    [SerializeField] private Transform productSlot;
+    public List<Ingredient> trayIngredients = new List<Ingredient>(); // Хранение объектов ингредиентов на подносе
     
     [Header("AUDIO")]
     [SerializeField] AudioSource audioSource;
@@ -129,8 +133,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         int freeSlotIndex = GetFreeSlotIndex();
 
-
-
         if (currentIngredient == ingredient)
         {
             Debug.Log($"Вы уже держите {ingredient}.");
@@ -138,10 +140,11 @@ public class PlayerInteraction : MonoBehaviour
         else if (freeSlotIndex != -1)
         {
             tray.SetActive(true);
+            hasTray = true;  // Есть поднос
 
             GameObject ingredientObject = Instantiate(ingredientPrefab, traySlots[freeSlotIndex]);
             ingredientObject.transform.localPosition = Vector3.zero; // Обнуляем позицию в слоте
-            slotContents[freeSlotIndex] = ingredientObject;
+            trayIngredients.Add(ingredient);
 
             Debug.Log($"Вы взяли {ingredient} и положили его на поднос в слот {freeSlotIndex + 1}");
 
@@ -159,36 +162,50 @@ public class PlayerInteraction : MonoBehaviour
 
     int GetFreeSlotIndex()
     {
-        for (int i = 0; i < slotContents.Length; i++)
-        {
-            if (slotContents[i] == null)
-                return i; // Возвращаем индекс первого свободного слота
-        }
-        return -1; // Все слоты заняты
+        int freeSlotIndex = trayIngredients.Count < 3 ? trayIngredients.Count : -1;
+        return freeSlotIndex; // Все слоты заняты
     }
     
     public void ClearTraySlot(int slotIndex)
     {
-        if (slotContents[slotIndex] != null)
-        {
-            Destroy(slotContents[slotIndex]); // Удаляем объект из слота
-            slotContents[slotIndex] = null;
-
-            Debug.Log($"Слот {slotIndex + 1} на подносе очищен.");
-
-            // Отключаем поднос, если он пуст
-            if (IsTrayEmpty())
-                tray.SetActive(false);
-        }
+        Destroy(traySlots[slotIndex].GetChild(0).gameObject);
     }
 
     bool IsTrayEmpty()
     {
-        foreach (GameObject content in slotContents)
-        {
-            if (content != null)
-                return false;
-        }
-        return true;
+        return trayIngredients.Count == 0 ? true : false;
+    }
+
+    public bool HasIngredients()
+    {
+        return trayIngredients.Count > 0;
+    }
+
+    public int GetIngredientCount()
+    {
+        return trayIngredients.Count;
+    }
+
+    public List<Ingredient> TakeIngredients(int count)
+    {
+        List<Ingredient> takenIngredients = trayIngredients.GetRange(0, count);
+        //trayIngredients.RemoveRange(0, count);
+        return takenIngredients;
+    }
+
+    public bool CanTakeDish()
+    {
+        return currentDishType == DishType.None;
+    }
+
+    public void TakeDish(DishType dishType, GameObject productPrefab)
+    {
+        currentDishType = dishType;
+        hasTray = true;
+        tray.SetActive(true);
+        hasMixedProduct = true;
+        GameObject ingredientObject = Instantiate(productPrefab, productSlot);
+        ingredientObject.transform.localPosition = Vector3.zero; // Обнуляем позицию в слоте
+        Debug.Log($"Игрок забрал блюдо: {dishType}");
     }
 }
