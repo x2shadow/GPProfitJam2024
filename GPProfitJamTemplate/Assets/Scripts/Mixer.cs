@@ -3,7 +3,6 @@ using UnityEngine;
 public class Mixer : MonoBehaviour, IInteractable
 {
     [SerializeField] PlayerInteraction player;
-    [SerializeField] Oven oven;
 
     public bool isReadyToMix = false;
     public bool IsMixed = false;
@@ -13,6 +12,24 @@ public class Mixer : MonoBehaviour, IInteractable
     [SerializeField] AudioClip mixerSound;
     [SerializeField] AudioClip mixerFilledSound;
 
+    public void Interact(PlayerInteraction player)
+    {
+        if (!isReadyToMix && player.currentIngredient != Ingredient.None) // Добавить в миксер
+        {
+            AddIngredientToMixer(player.currentIngredient);
+            player.currentIngredient = Ingredient.None;
+        }
+        else if (isReadyToMix)
+        {
+            // Смешать
+            TryMix();
+        }
+        else
+        {
+            Debug.Log("У вас ничего нет.");
+        }
+    }
+    
     public void TryMix()
     {
         if (!OrderManager.Instance.IsOrderComplete())
@@ -63,30 +80,6 @@ public class Mixer : MonoBehaviour, IInteractable
         {
             Debug.Log("Все ингредиенты добавлены. Можно смешивать!");
             isReadyToMix = true;
-        }
-    }
-
-    public void ResetMixer()
-    {
-        IsMixed = false;
-        Debug.Log("Миксер очищен.");
-    }
-
-    public void Interact(PlayerInteraction player)
-    {
-        if (!isReadyToMix && player.currentIngredient != Ingredient.None) // Добавить в миксер
-        {
-            AddIngredientToMixer(player.currentIngredient);
-            player.currentIngredient = Ingredient.None;
-        }
-        else if (isReadyToMix)
-        {
-            // Смешать
-            TryMix();
-        }
-        else
-        {
-            Debug.Log("У вас ничего нет.");
         }
     }
 

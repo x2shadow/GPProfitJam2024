@@ -17,7 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] public GameObject tray; // Поднос персонажа
     [SerializeField] public Transform playerTrayPosition;
     [SerializeField] private Transform[] traySlots = new Transform[3]; // Три слота на подносе
-    private GameObject[] slotContents = new GameObject[3]; // Хранение объектов ингредиентов на подносе
+    public GameObject[] slotContents = new GameObject[3]; // Хранение объектов ингредиентов на подносе
     
     [Header("AUDIO")]
     [SerializeField] AudioSource audioSource;
