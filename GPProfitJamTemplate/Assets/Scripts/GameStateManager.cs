@@ -29,7 +29,7 @@ public class GameStateManager : MonoBehaviour
 
     void Start()
     {
-        Dish.LoadIcons();
+        Dish.LoadResources();
     }
 
     public void PauseGame()

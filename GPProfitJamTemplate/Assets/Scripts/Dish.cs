@@ -49,6 +49,22 @@ public static class Dish
         dishIcons[DishType.ChocolateCake] = Resources.Load<Sprite>("Icons/ChocolateCakeIcon");
     }
 
+    private static Dictionary<DishType, GameObject> dishPrefabs = new Dictionary<DishType, GameObject>(); 
+
+    public static void LoadPrefabs()
+    {
+        dishPrefabs[DishType.StrawberryCake] = Resources.Load<GameObject>("Prefabs/StrawberryCake");
+        dishPrefabs[DishType.Cupcake] = Resources.Load<GameObject>("Prefabs/Cupcake");
+        dishPrefabs[DishType.Cookie] = Resources.Load<GameObject>("Prefabs/Cookie");
+        dishPrefabs[DishType.ChocolateCake] = Resources.Load<GameObject>("Prefabs/ChocolateCake");
+    }
+
+    public static void LoadResources()
+    {
+        LoadIcons();
+        LoadPrefabs();
+    }
+
     public static Ingredient[] GetIngredients(DishType dishType)
     {
         if (dishes.TryGetValue(dishType, out Ingredient[] ingredients))
@@ -107,6 +123,17 @@ public static class Dish
         }
 
         Debug.LogWarning($"Иконка для блюда {dishType} не найдена.");
+        return null;
+    }
+
+    public static GameObject GetDishPrefab(DishType dishType)
+    {
+        if (dishPrefabs.TryGetValue(dishType, out GameObject dishPrefab))
+        {
+            return dishPrefab;
+        }
+
+        Debug.LogWarning($"Префаб для блюда {dishType} не найдена.");
         return null;
     }
 }

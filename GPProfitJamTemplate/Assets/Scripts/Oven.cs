@@ -9,11 +9,11 @@ public class Oven : MonoBehaviour, IInteractable
 
     public Slider ovenSlider;
 
-    public Image   productSlot;
+    [HideInInspector] public Image   productSlot;
     public Sprite  noIcon; 
-    public Sprite  dishIcon;
+    [HideInInspector] public Sprite  dishIcon;
 
-    public GameObject productPrefab;
+    public GameObject dishPrefab;
 
     public IOvenState EmptyState  { get; private set; }
     public IOvenState FilledState { get; private set; }
