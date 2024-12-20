@@ -108,4 +108,9 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        //Debug.Log("Столкновение с объектом: " + hit.gameObject.name);
+    }
 }
