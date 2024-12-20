@@ -12,7 +12,6 @@ public class LiftPlatform : MonoBehaviour
 
     private CharacterController player;              // Ссылка на игрока
     private bool isPlayerOnLift = false;             // Флаг, проверяющий, стоит ли игрок на лифте
-    private bool isAtTop = false;
 
     private Vector3 startPosition;                   // Начальная позиция лифта
     private Vector3 targetPosition;
@@ -55,8 +54,6 @@ public class LiftPlatform : MonoBehaviour
         {
             if (isMovingUp)
             {
-                isAtTop = true; // Отметить, что лифт достиг верхней точки
-
                 if (!isPlayerOnLift)
                 {  
                     StartCoroutine(WaitBeforeMovingDown());
@@ -85,7 +82,6 @@ public class LiftPlatform : MonoBehaviour
 
         // После задержки начать движение вниз
         isMovingUp = false;
-        isAtTop = false;
     }
 
     IEnumerator WaitBeforeMovingUp()

@@ -21,12 +21,7 @@ public class Mixer : MonoBehaviour, IInteractable
     [SerializeField] private Image[] ingredientSlots; // Слоты для ингредиентов
     [SerializeField] private Image   productSlot; // Слоты для ингредиентов
     [SerializeField] private Sprite  plusIcon; // Иконка для пустого слота
-    [SerializeField] private Sprite  flourIcon; // Иконка муки
-    [SerializeField] private Sprite  chocolateIcon; 
-    [SerializeField] private Sprite  milkIcon; // Иконка молока
     [SerializeField] private Sprite  noIcon; 
-    [SerializeField] private Sprite  dishIcon; 
-    [SerializeField] private Sprite  cookieIcon; 
 
     public void Interact(PlayerInteraction player)
     {
@@ -106,20 +101,9 @@ public class Mixer : MonoBehaviour, IInteractable
         for (int i = 0; i < ingredientSlots.Length; i++)
         {
             ingredientSlots[i].sprite = i < loadedIngredients.Count
-                ? GetIngredientIcon(loadedIngredients[i])
+                ? IngredientIconManager.GetIngredientIcon(loadedIngredients[i])
                 : plusIcon;
         }
-    }
-
-    private Sprite GetIngredientIcon(Ingredient ingredient)
-    {
-        return ingredient switch
-        {
-            Ingredient.Flour => flourIcon,
-            Ingredient.Chocolate => chocolateIcon,
-            Ingredient.Milk => milkIcon,
-            _ => plusIcon,
-        };
     }
 
     private void ClearSlots()
