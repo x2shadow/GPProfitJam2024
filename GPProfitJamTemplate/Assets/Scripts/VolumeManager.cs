@@ -19,7 +19,7 @@ public class VolumeManager : MonoBehaviour
     public void ChangeVolume()
     {
         AudioListener.volume = volumeSlider.value;
-        if(volumeSlider.value == 0) volumeIcon.sprite = Resources.Load<Sprite>("Icons/mute-white"); else volumeIcon.sprite = Resources.Load<Sprite>("Icons/medium-volume-white"); 
+        if(volumeSlider.value == 0) volumeIcon.sprite = Resources.Load<Sprite>("Icons/soundOffBtn"); else volumeIcon.sprite = Resources.Load<Sprite>("Icons/soundOnBtn"); 
     }
 
     public void ToggleMute()
@@ -29,13 +29,13 @@ public class VolumeManager : MonoBehaviour
             oldVolume = volumeSlider.value;
             volumeSlider.value = 0;
             AudioListener.volume = 0;
-            volumeIcon.sprite = Resources.Load<Sprite>("Icons/mute-white");
+            volumeIcon.sprite = Resources.Load<Sprite>("Icons/soundOffBtn");
         }
         else
         {
             volumeSlider.value = oldVolume;
             AudioListener.volume = oldVolume;
-            volumeIcon.sprite = Resources.Load<Sprite>("Icons/medium-volume-white");
+            volumeIcon.sprite = Resources.Load<Sprite>("Icons/soundOnBtn");
         }
     }
 }
