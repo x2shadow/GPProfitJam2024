@@ -14,6 +14,8 @@ public class PlayerInteraction : MonoBehaviour
    
     public TrayManager trayManager; // Менеджер подноса
 
+    [SerializeField] Animator animator;
+
     public bool hasMixedProduct = false; // Смешанный продукт в руках
     public bool hasBakedDish = false; // Готовое блюдо в руках
     public bool hasTray = false;    // Поднос в руках 
@@ -31,6 +33,9 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        animator.SetBool("hasTray", hasTray);
+
+
         if (nearbyInteractable != null && Input.GetButtonDown("Interact"))
         {
             nearbyInteractable.Interact(this);

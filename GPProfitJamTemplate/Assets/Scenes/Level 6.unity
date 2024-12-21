@@ -279,6 +279,7 @@ MonoBehaviour:
   currentDishType: 0
   clientSystem: {fileID: 1470461412}
   trayManager: {fileID: 11691185}
+  animator: {fileID: 1844265201}
   hasMixedProduct: 0
   hasBakedDish: 0
   hasTray: 0

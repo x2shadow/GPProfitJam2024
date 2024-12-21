@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Проверка, находится ли персонаж на земле
         isGrounded = characterController.isGrounded;
+        if (isGrounded) animator.SetBool("Jumping", false);
 
         // Если на земле, сбрасываем скорость по оси Y (чтобы избежать накопления гравитации)
         if (isGrounded && velocity.y < 0)
@@ -106,6 +107,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 audioSource.PlayOneShot(jumpSound);
             }
+
+            animator.SetBool("Jumping", true);
         }
     }
 
