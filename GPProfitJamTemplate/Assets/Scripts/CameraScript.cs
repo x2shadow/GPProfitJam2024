@@ -31,10 +31,10 @@ public class CameraScript : MonoBehaviour
     [Header("Camera field of view")]
     [SerializeField] float cameraFOV;
 
-    Camera camera;
+    Camera cameraComponent;
     private void Start()
     {
-        camera = this.GetComponent<Camera>();
+        cameraComponent = this.GetComponent<Camera>();
     }
     float CameraYAngle()
     {
@@ -64,7 +64,7 @@ public class CameraScript : MonoBehaviour
     void LateUpdate()
     {        
         transform.rotation = Quaternion.Euler(cameraTiltAngle, CameraYAngle(), 0);
-        camera.fieldOfView = cameraFOV;
+        cameraComponent.fieldOfView = cameraFOV;
 
         xDif = player.position.x - xref;
         if (Mathf.Abs(xDif) > xDeadzone)

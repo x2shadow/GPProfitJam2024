@@ -12,7 +12,7 @@ public class Mixer : MonoBehaviour, IInteractable
     private List<Ingredient> loadedIngredients = new List<Ingredient>(); // Список ингредиентов в миксере
     private bool isMixing = false; // Флаг, идет ли процесс смешивания
     private DishType mixedDishType; // Тип готового блюда
-    [SerializeField] private GameObject productPrefab;
+    private GameObject productPrefab;
 
     [SerializeField] private float mixingTime = 2f; // Время на смешивание
     
@@ -38,6 +38,7 @@ public class Mixer : MonoBehaviour, IInteractable
         {
             if (player.currentDishType == DishType.None)
             {
+                productPrefab = Resources.Load<GameObject>("Prefabs/MixedProduct");
                 player.trayManager.UpdateTray(player, true, mixedDishType, productPrefab, false);
                 Debug.Log($"Игрок забрал блюдо: {mixedDishType}");
                 mixedDishType = DishType.None;

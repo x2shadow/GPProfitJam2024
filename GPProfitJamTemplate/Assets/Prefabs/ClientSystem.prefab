@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2136596471061816014
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8067577188887400871}
+  - component: {fileID: 3862525897380126457}
+  m_Layer: 0
+  m_Name: ClientSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8067577188887400871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136596471061816014}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3862525897380126457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136596471061816014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02690ac397c583a4c8229e13f8644c9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clientsNumber: 1
+  clientsDone: 0
+  spawnrate: 0.5
+  levelManager: {fileID: 0}
+  clientsPrefabs:
+  - {fileID: 574522055236611294, guid: 1caa21c39d0058447ab01089a64cb221, type: 3}
+  - {fileID: 574522055236611294, guid: 42452a010f7d6e74f9976f6b480fad7a, type: 3}
+  - {fileID: 574522055236611294, guid: 2cdbb06218a61894083ec416175904f7, type: 3}
+  - {fileID: 574522055236611294, guid: aaef822608f67124681459a5269c6273, type: 3}
+  - {fileID: 574522055236611294, guid: 98f6244416ee9034ab152c2c9824c7f4, type: 3}
+  waitPoint: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  queuePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  waitingClient: {fileID: 0}

@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        joystickActive = Application.isMobilePlatform;
     }
 
     void Update()
