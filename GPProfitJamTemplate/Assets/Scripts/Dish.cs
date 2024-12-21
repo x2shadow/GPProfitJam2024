@@ -121,27 +121,27 @@ public static class Dish
         // Пример сопоставления комбинаций ингредиентов с блюдами
         if (ingredients.Count == 3)
         {
-            if (ingredients[0] == Ingredient.Milk &&
-                ingredients[1] == Ingredient.Flour &&
-                ingredients[2] == Ingredient.Egg)
+            if (ingredients.Contains(Ingredient.Milk) &&
+                ingredients.Contains(Ingredient.Flour) &&
+                ingredients.Contains(Ingredient.Egg))
             {
                 return DishType.StrawberryCake;
             }
-            if (ingredients[0] == Ingredient.Chocolate &&
-                ingredients[1] == Ingredient.Flour &&
-                ingredients[2] == Ingredient.Egg)
+            if (ingredients.Contains(Ingredient.Chocolate) &&
+                ingredients.Contains(Ingredient.Flour) &&
+                ingredients.Contains(Ingredient.Egg))
             {
                 return DishType.Cupcake;
             }
-            if (ingredients[0] == Ingredient.Milk &&
-                ingredients[1] == Ingredient.Flour &&
-                ingredients[2] == Ingredient.Chocolate)
+            if (ingredients.Contains(Ingredient.Milk) &&
+                ingredients.Contains(Ingredient.Flour) &&
+                ingredients.Contains(Ingredient.Chocolate))
             {
                 return DishType.Cookie;
             }
-            if (ingredients[0] == Ingredient.Milk &&
-                ingredients[1] == Ingredient.Egg &&
-                ingredients[2] == Ingredient.Chocolate)
+            if (ingredients.Contains(Ingredient.Milk) &&
+                ingredients.Contains(Ingredient.Egg) &&
+                ingredients.Contains(Ingredient.Chocolate))
             {
                 return DishType.ChocolateCake;
             }

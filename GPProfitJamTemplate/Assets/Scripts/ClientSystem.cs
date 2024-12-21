@@ -68,7 +68,7 @@ public class ClientSpawnSystem : MonoBehaviour
             {
                 DishType randomDish = (DishType)Random.Range(1, 5); // от 1 до 5 в enum DishType
                 //clientComponent.dishType = randomDish;
-                clientComponent.dishType = DishType.StrawberryCake;
+                clientComponent.dishType = DishType.Cupcake;
                 Debug.Log($"Клиенту назначено блюдо: {clientComponent.dishType}");
             }
             else
