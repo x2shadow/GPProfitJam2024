@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             horizontal = Input.GetAxisRaw("Horizontal");
-            vertical = Input.GetAxisRaw("Vertical");
+            vertical   = Input.GetAxisRaw("Vertical");
         }
 
         Vector3 move = new Vector3(horizontal, 0, vertical).normalized;

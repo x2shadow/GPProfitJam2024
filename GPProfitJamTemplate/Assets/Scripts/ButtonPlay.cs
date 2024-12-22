@@ -8,7 +8,7 @@ public class ButtonPlay : MonoBehaviour
     public void PlayGame()
     {
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        SceneManager.LoadScene("Level Selection");
+        SceneManager.LoadScene("StartMeta");
         Time.timeScale = 1f; 
     }
 }
