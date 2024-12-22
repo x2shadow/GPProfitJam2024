@@ -89,7 +89,7 @@ public class LevelManager : MonoBehaviour
         {
             int minutes = Mathf.FloorToInt(timer / 60);
             int seconds = Mathf.FloorToInt(timer % 60);
-            timerText.text = $"Время: {minutes:00}:{seconds:00}";
+            timerText.text = $"{minutes:00}:{seconds:00}";
         }
     }
 
