@@ -13,7 +13,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public Sound[] sounds; // Список звуков, который можно задавать в инспекторе
-    private AudioSource audioSource;
+    public AudioSource audioSource;
 
     private void Awake()
     {

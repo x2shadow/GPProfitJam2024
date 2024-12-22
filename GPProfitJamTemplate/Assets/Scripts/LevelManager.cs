@@ -15,7 +15,6 @@ public class LevelManager : MonoBehaviour
     public GameObject losePanel; // Панель проигрыша
 
     [Header("AUDIO")]
-    [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip winSound;
     [SerializeField] AudioClip loseSound;
 
@@ -58,26 +57,20 @@ public class LevelManager : MonoBehaviour
         if (isWin)
         {
             winPanel.SetActive(true);
-            timerText.text = "Победа";
+            timerText.text = "GG";
             Debug.Log("Уровень завершён!");
 
             // Проигрывание звука
-            if (audioSource != null && winSound != null)
-            {
-                audioSource.PlayOneShot(winSound);
-            }
+            SoundManager.Instance.audioSource.PlayOneShot(winSound);
         }
         else
         {
             losePanel.SetActive(true);
-            timerText.text = "GG XD";
+            timerText.text = "GG";
             Debug.Log("Время вышло!");
 
             // Проигрывание звука
-            if (audioSource != null && loseSound != null)
-            {
-                audioSource.PlayOneShot(loseSound);
-            }
+            SoundManager.Instance.audioSource.PlayOneShot(loseSound);
         }
 
         Time.timeScale = 0; // Останавливаем время
