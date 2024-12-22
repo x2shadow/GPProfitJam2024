@@ -34,6 +34,11 @@ public class PauseMenu : MonoBehaviour
         GameStateManager.Instance.ResumeGame();
     }
 
+    public void Pause()
+    {
+        GameStateManager.Instance.PauseGame();
+    }
+
     public void OnGamePaused()
     {
         pausePanel.SetActive(true);
