@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 7853965605240447694}
   - component: {fileID: 928080841321053420}
   - component: {fileID: 4507129552896505663}
+  - component: {fileID: 5154485965193769459}
   m_Layer: 5
   m_Name: Button(Interact)
   m_TagString: Untagged
@@ -196,7 +197,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 928080841321053420}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5154485965193769459}
+        m_TargetAssemblyTypeName: MobileButtonInteract, Assembly-CSharp
+        m_MethodName: MobileInteract
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5154485965193769459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404591970681980279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e78eb0212e71604fb0ab1c0d9be2db7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &2479932806046801441
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,6 +788,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mobileUI: {fileID: 3116719383597304269}
+  mobileInteractButton: {fileID: 1404591970681980279}
+  player: {fileID: 0}
 --- !u!1 &5106736922510320400
 GameObject:
   m_ObjectHideFlags: 0
