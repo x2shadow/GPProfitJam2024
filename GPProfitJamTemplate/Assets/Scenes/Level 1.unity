@@ -7324,6 +7324,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1620764644}
+    - target: {fileID: 808582930719910666, guid: 6596ecfef573eb3499be1f1eec65480e, type: 3}
+      propertyPath: mobileUI
+      value: 
+      objectReference: {fileID: 1895854353}
+    - target: {fileID: 808582930719910666, guid: 6596ecfef573eb3499be1f1eec65480e, type: 3}
+      propertyPath: mobileInteractButton
+      value: 
+      objectReference: {fileID: 177862533}
     - target: {fileID: 1478187367936454805, guid: 6596ecfef573eb3499be1f1eec65480e, type: 3}
       propertyPath: pausePanel
       value: 
@@ -7453,7 +7461,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3116719383597304269, guid: 6596ecfef573eb3499be1f1eec65480e, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8693835285065643976, guid: 6596ecfef573eb3499be1f1eec65480e, type: 3}
       insertIndex: 3
@@ -7463,17 +7472,6 @@ PrefabInstance:
       addedObject: {fileID: 1954470664}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6596ecfef573eb3499be1f1eec65480e, type: 3}
---- !u!114 &1609186678 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4507129552896505663, guid: 6596ecfef573eb3499be1f1eec65480e, type: 3}
-  m_PrefabInstance: {fileID: 1609186677}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1609186680 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4366646822488377589, guid: 6596ecfef573eb3499be1f1eec65480e, type: 3}
@@ -7564,7 +7562,7 @@ PrefabInstance:
     - target: {fileID: 3407565780330483732, guid: 18672705ba299d645ac43b83563f687c, type: 3}
       propertyPath: interactButtonMobile
       value: 
-      objectReference: {fileID: 1609186678}
+      objectReference: {fileID: 177862536}
     - target: {fileID: 7323221762720401038, guid: 18672705ba299d645ac43b83563f687c, type: 3}
       propertyPath: pausePanel
       value: 
@@ -8679,7 +8677,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 426dacb86c89d264cb6a896f13c3a32a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8a8633ca83c8e7f488724348bd2eb5dd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
